@@ -1,0 +1,121 @@
+<div class="page-title-box">
+    <span class="page-title">Select Business Groups</span>
+    <div class="popup-select-item-controls top order-pop-controls-button">
+        <span class="businessGrp-cancel-buttonJS cancel-select-button">
+            <i class="fa fa-times-circle-o"></i>
+            <span data-i18n="cancel"> Cancel</span>
+        </span>
+        <span class="businessGrp-buttonJS select-element-button done-button x-button deactive">Select</span>
+    </div>
+</div>
+<div class="modal-body" style="padding:0px;">
+
+    <div id="inner-content">
+
+        <!-- Search/Filter Controls in the Sidebar -->
+        <div class="sidebar">
+
+             <div class="create-button" id="includeAllBgs" style="display:none;">
+                <span class="x-button x-button-enabled x-img-button">
+                    <span class="fontAwsmIconQueue">
+                        <i class="fa fa-circle"><i class="fa fa-download"></i></i>
+                    </span>
+                    <span data-i18n="">Include All</span>
+                </span>
+             </div>
+
+            <!-- Search -->
+            <div class="filter-box search-box">
+                <div class="search-text-label" data-i18n="findBusinessGroup">Find Business Groups</div>
+                <div>
+                    <span class="k-textbox k-space-right" style="width:146px">
+                    <input type="text" id="businessGrp-search-text" class="search-text"/>
+                    <a href="#" id="businessGrp-search-button" class="k-icon k-i-search search-button">&nbsp;</a>
+                    </span>
+                    <a id="businessGrp-clear-search" class="k-button clear-search"><span class="k-icon k-i-close"></span></a>
+                </div>
+            </div>
+
+            <!-- Filter by Finalize Status -->
+            <div class="filter-box" style="display: block">
+                <div class="filter-text" data-i18n="byFinalizeStatus">Finalize Status</div>
+                <br>
+                <input type="radio" name="businessSelectType" value="Available" checked="checked" />
+                <span data-i18n="availableBusinessGrps">Available</span>
+                <br>
+                <input type="radio" name="businessSelectType" value="Selected" />
+                <span data-i18n="selectedBusinessGrps">Selected</span>
+                <br>
+            </div>
+        </div>
+        <!-- Business Groups Get Listed Here -->
+        <div id="list" class="list-pane">
+
+			<!-- List Header -->
+			<div class="list-header">
+				<div class="list-total">
+					<span class="all-results-label results-total" id="results-total" data-i18n="allResults">All Results</span>
+					<span class="search-results-label results-total" data-i18n="searchResults" style="display: none">Search Results</span>
+					<span class="results-count results-total"></span>
+				</div>
+				<div class="list-nav list-nav-top"></div>
+			</div>
+
+			<!-- List Body -->
+			<div class="list-wrapper results-list-wrapper">
+				<div class="table-header"></div>
+                <div>
+                    <ul class="list selectedList" style="display:none">
+                        
+                    </ul>
+                </div>
+				<div>
+					<ul class="list item-list table-content"></ul>
+				</div>
+			</div>
+
+		    <!-- Bottom nav -->
+		    <div class="list-nav list-nav-bottom"></div>
+
+        </div>
+
+    </div> <!-- inner-content section gets completed here -->
+</div>
+
+<style>
+.selectColumn{
+	width:100px;
+}
+body #modal-container.criteria-modal {
+    width: 900px;
+    height: 450px;
+    margin-left: -450px;
+}
+.create-button .fa-download {
+    font-size: 13px; 
+    color: #37708E; 
+    position: absolute; 
+    left: 4px; 
+    top: 5px; 
+}
+.create-button .fa-circle {
+    font-size: 24px !important;
+    color: #CEE2EB;
+    position: relative;
+    top: 5px;
+    left: 1px;
+}
+.create-button .fontAwsmIconQueue {
+    margin-right: 10px;
+}
+.fontAwsmIconQueue {
+    cursor: pointer;
+    font-size: 15px;
+    margin-left: 3px;
+    display: inline-block;
+    width: 15px;
+}
+.list-nav{
+    margin-left:0px;
+}
+</style>

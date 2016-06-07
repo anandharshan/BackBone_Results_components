@@ -1,0 +1,283 @@
+<div id="resultsPPA-view" class="page-container goldUI">
+    <div class="page-title-box">
+        <span class="page-title" data-i18n="ppaResults-title">Prior Period Results</span>
+    </div>
+    <!-- Wrapper for search/filter and list columns -->
+    <div id="inner-content">
+        <!-- Search/filter -->
+        <div class="sidebar">
+
+            <div class="sidebar-content">
+            <div class="create-button" id="createPDF" >
+                <span class="x-button x-button-enabled x-img-button">
+                    <span class="fontAwsmIconQueue">
+                        <i class="fa fa-circle"><i class="fa fa-file-pdf-o"></i></i>
+                    </span>
+                    <span data-i18n="createPDFBtn">Create PDF</span>
+                </span>
+             </div>
+
+             <!-- Period Filter -->
+            <div class="filter-box search-box">
+                <div class="filter-text" data-i18n="ppaResults-filters">Filters</div>
+                <br> 
+                <div id="resultsTypeLabel" class="filter-type" data-i18n="ppaResults-Type">Results Type:</div>
+                <div class="periodSelect2Cmp">
+                    <select for='dropdown-resultsType' id='dropdown-resultsType' class='year-plan-selection hide'></select>
+                </div>   
+                
+                <div id="periodsToLabel" class="filter-type" data-i18n="ppaResults-PeriodTo" style="margin-top:0px;clear:both;">Period (To):</div>
+                <div class="periodSelect2Cmp">
+                    <select for='periods-selectTo' id='periods-selectTo' class='year-plan-selection hide'>
+                    </select>
+                </div>
+
+                <div id="periodsFromLabel" class="filter-type" data-i18n="ppaResults-PeriodFrom" style="margin-top:0px;clear:both;">Period (From):</div>
+                <div class="periodSelect2Cmp" style="display:none">
+                    <select for='periods-selectFrom' id='periods-selectFrom' class='year-plan-selection hide'></select>
+                </div>
+
+                <div class="periodFromContainer">
+                    <span id="periodsPPAFrom">
+
+                    </span>
+                </div>
+
+                <div id="resultsUnitTypeLabel" class="filter-type" data-i18n="ppaResults-UnitType" style="margin-top:0px;clear:both;">Unit Type:</div>
+                <div class="periodSelect2Cmp">
+                    <select for='dropdown-resultsUnitType' id='dropdown-resultsUnitType' class='year-plan-selection hide'></select>
+                </div>  
+
+                <div id="personPopup" class="filter-type" data-i18n="ppaResults-Person" style="margin-top:0px;clear:both;">Person:</div>
+                <div id="personPopupCmp" class="clearfix form-col">
+                    <div class="form-row clearfix">
+                        <div class="value-column">
+                            <div class="input-append">
+                                <div class="select2-search-container select2-container-multi inputFieldStyle">
+                                    <ul class="select2-choices select-element">
+                                    </ul>
+                                </div>
+                                <div class="basicSearchInput inputFieldStyle">
+                                    <input type="text" search-value="" disabled class="searchInputTextBox" id="addPerson">
+                                </div>
+                                <i data-view="person" data-input-field="addPerson" id="assignmentBtn1" class="add-on fa fa-ellipsis-h selectItemPopUP"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div> 
+
+                <div id="earningGrpPopup" class="filter-type" data-i18n="ppaResults-EG" style="margin-top:0px;clear:both;display:none;">Earning Group:</div>
+                <div id="earningGrpCmp" class="clearfix form-col" style="display:none;">
+                    <div class="form-row clearfix">
+                        <div class="value-column">
+                            <div class="input-append">
+                                <div class="select2-search-container select2-container-multi inputFieldStyle">
+                                    <ul class="select2-choices select-element">
+                                    </ul>
+                                </div>
+                                <div class="basicSearchInput inputFieldStyle">
+                                    <input type="text" search-value="" disabled class="searchInputTextBox" id="addEarningGrp">
+                                </div>
+                                <i data-view="earningGrp" data-input-field="addEarningGrp" id="assignmentBtn2" class="add-on fa fa-ellipsis-h selectItemPopUP"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="businessGrpPopup" class="filter-type" data-i18n="ppaResults-BG" style="margin-top:0px;clear:both;">Business Group:</div>
+                <div id="businessGrpCmp" class="clearfix form-col">
+                    <div class="form-row clearfix">
+                        <div class="value-column">
+                            <div class="input-append">
+                                <div class="select2-search-container select2-container-multi inputFieldStyle">
+                                    <ul class="select2-choices select-element">
+                                    </ul>
+                                </div>
+                                <div class="basicSearchInput inputFieldStyle">
+                                    <input type="text" search-value="" disabled class="searchInputTextBox" id="addBusinessGrp">
+                                </div>
+                                <i data-view="businessGrp" data-input-field="addBusinessGrp" id="assignmentBtn3" class="add-on fa fa-ellipsis-h selectItemPopUP"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div> 
+
+            </div>  
+            </div>
+            <div class="expander"></div>
+        </div>
+        <!-- Process Group Columns -->
+        <div id="list" class="list-pane">
+            <div class="clearfix" style="clear:both; min-width: 1050px;">
+                <div id="listBreadCrumbs" style="width:800px;float:left;margin-left: 20px;">
+                    <ul class="ulStyle"></ul>
+                </div>
+                <div id="splitView" style="width:200px;float:right;margin-top:15px;">
+                    
+                    <div class="gold-ui view-drop-down" style="float:right">
+                        <div class="displayViewOptions" style="position: relative;float: right;right: 16px;" data-viewselected="list">
+                            <span class="type_icon">
+                                <i class="fa fa-table"></i>
+                            </span>
+                            <span class="caret_icon">
+                                <i class="fa fa-caret-down"></i>
+                            </span>
+                        </div>
+                        <div class="listOfDisplayOptions">
+                            <div class="arrow-box">
+                                <p class="title" data-i18n="ppaResults-changeView">Change View</p>
+                                <ul>
+                                    <li>    
+                                        <input checked="checked" type="radio" name="optView" value="summary" id="summaryView"/>
+                                        <label for="summaryView"><i class="fa fa-table"></i><span class="text" data-i18n="ppaResults-summaryView">Summary View</span></label>
+                                    </li>
+                                    <li>    
+                                        <input type="radio" name="optView" value="list" id="listView"/>
+                                        <label for="listView"><i class="fa fa-list"></i><span class="text" data-i18n="ppaResults-listView">List View</span></label>
+                                    </li>
+                                </ul>                        
+                            </div>
+                        </div>                
+                    </div>
+
+
+
+                </div>
+            </div>
+
+            <div id="listViewPPAResults">
+                
+            </div>
+            <div id="noResultsDisplay">
+                <strong style="font-weight: bold;padding-right:10px;">
+                    <i class="fa fa-exclamation-triangle" style="padding-right: 5px;color: #346F8F;"></i>
+                    <span data-i18n="ppaResults-note">Note:</span>
+                </strong>
+                <span data-i18n="ppaResults-noteMsg">There are no results to display for this date range.</span>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div id="popupDiv" style="display:none"></div>
+<script id='pdgprogress-tempalte' type='text/template'>
+<div id='pdf-spinner' class="hideable " >
+  </div>
+  <div id='pdf-msg' class="hideable">
+    <div class='pdf-gen-msg' data-i18n="pdfProgress">PDF report is being generated</div>
+    <div class="hideable k-loading-image"></div>
+    <div class="hide pdfclose">
+        <span id="close-pdf-button" style="padding: 4px 16px 3px;" class="done-button x-button x-button-enabled" data-i18n="close">
+          Close
+        </span>
+    </div>
+  </div>
+</script>
+
+<style>
+.select2-search-container{
+    width:177px;
+}
+.select2-container-multi .select2-choices .select2-search-choice{
+    padding: 0 15px 0 10px !important;
+}
+#resultsPPA-view.goldUI .periodSelect2Cmp {
+    margin-bottom: 5px;
+}
+.periodFromContainer{
+    margin-top: -5px;
+    font-size: 12px;
+    padding-left: 6px;
+}
+.create-button .fa-file-pdf-o{
+    font-size: 13px;
+    color: #37708E;
+    position: absolute;
+    left: 5px;
+    top: 5px;
+}
+.expander {
+    width: 22px;
+    height: 30px;
+    position: absolute;
+    top: 13px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    right: -1px;
+    border-radius: 5px 0 0 5px;
+    border-right: 1px solid #fff;
+    background: #fff url(../images/collapse.png) no-repeat 3px 7px;
+}
+.expander.expand {
+    right: -23px;
+    border: 1px solid #ccc;
+    background: #fff url(../images/expand.png) no-repeat 3px 7px;
+    border-left: 1px solid #fff;
+    border-radius: 0 5px 5px 0;
+}
+.sidebar-content{
+    width:250px;
+}
+#resultsPPA-view .page-title-box {
+    background: #fafafa none repeat scroll 0 0;
+    clear: both;
+    height: 35px;
+    padding: 20px;
+    border-bottom: 1px solid #dddee0;
+    position: relative;
+}
+#resultsPPA-view .x-img-button {
+    padding: 5px 90px 6px 5px;
+    font-size: 12px;
+}
+#noResultsDisplay{
+    padding: 100px;
+    text-align: center;
+    font-size: 13px;
+    font-style: italic;
+    display:none;
+}
+#pdf-spinner{
+  background: none repeat scroll 0 0 #000000;
+    left: 0;
+    opacity: 0.76;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+}
+#pdf-msg {
+    position:fixed;
+    top: 50%;
+    left: 50%;
+    width:30em;
+    height:9em;
+    margin-top: -9em; /*set to a negative number 1/2 of your height*/
+    margin-left: -15em; /*set to a negative number 1/2 of your width*/
+    border: 1px solid #ccc;
+    background-color: #f3f3f3;
+    text-align:center;
+}
+   #pdf-msg .k-loading-image{
+      top:20px;
+      position: absolute;
+    }
+   #pdf-msg .pdfclose{
+    margin-top:10px;
+  }
+ #pdf-msg #close-pdf-button{
+    padding: 4px 16px 3px;
+  }
+
+.pdf-gen-msg{
+  color:#000;
+  padding-top:20px;
+}
+.k-loading-image{
+  top:0;
+  right:0;
+  bottom:0;
+  left: 0; 
+  position:fixed;
+}
+</style>

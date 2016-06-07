@@ -1,0 +1,9 @@
+<% _.each(breadCrumbData, function(i, index) { %>
+<li class="searchBreadcrumb_LI" data-id="<%= i %>">
+	<span class="searchBreadcrumb_LI_A"><%- i.name %>
+		<% if(i.removable) { %>
+		<i class="fa fa-times delete searchBreadcrumb_LI_fa" data-removeid=<%= i.removeId %>></i>
+		<% } %>
+	</span>
+</li>
+<% }); %>

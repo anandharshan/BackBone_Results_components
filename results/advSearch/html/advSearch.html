@@ -1,0 +1,436 @@
+<div id="dashboard" class="page-container">
+    <div class="page-title-box">
+    	<span class="page-title" id="page-header" data-i18n='advsearch'>Advanced Search</span>
+        <ul class="tertiary-nav" id="viz_valuestable_tabs"></ul>
+        <div class="rightHelpMenu">
+            <div class="helpMenuItem searchOptionsBtn">
+                <span class="link-button searchOptions-button">
+                <i class="fa fa-gear"></i>
+                </span>
+            </div>
+        </div>
+    </div>
+    <!-- Content Wrapper -->
+    <div id="inner-content">
+        <!-- Sidebar -->
+	<div class="sidebar">
+		<div class="sidebar-content">
+     		<div id='periodFilter' class="period-container clearfix" ></div>
+			<div id="export_csv_btn" class="create-button">
+                <span class="x-button x-button-enabled x-img-button downloadButton">
+                    <span class='fontAwsmIconOrder'><i class="fa fa-download"></i></span>
+                    <span class="ordersActionLink">Download Results</span>
+                </span>
+            </div>
+			<div class="filter-box filter-form">
+				<div class="filter-text" data-i18n="filters">Filter</div>
+				<br>
+				<div id="filterControls" class="filterControls">
+					<div class="oldclearfix"> </div>
+				</div>
+				<div class="clear"></div>
+				<div class="filter-area button-container clearfix">
+					<i class="icon-undo"></i> <a href="#" id="reset" class="adv-search">Reset Filters</a>
+				</div>
+			</div>
+		</div>
+		<div class="expander"></div>
+	</div>
+     <div class="list-pane">
+    <ul class="search-breadcrumb clearfix"></ul>
+    
+    <div class="buttons">
+	    <div class="arrow-box-container" id="arrowBoxContainer">
+	      <div class="arrow-box">
+	        <ul>
+	          <li> <a class="view-all-saved-search" data-i18n="viewAllSavedSearches">View All Saved Searches </a></li>
+	          <li> <a class="save-as-new-saved-search" data-i18n="saveAsNewSavedSearch">Save as New Saved Search </a></li>
+	          <li> <a class="edit-saved-search" data-i18n="editCurrentSavedSearch">Save/Edit Current Saved Search</a></li>
+	          <li> <a class="favorite-saved-search" data-i18n="addToFavorites">Add to Favorites </a></li>
+	        </ul>
+	      </div>
+	    </div>
+	</div>
+	
+    <div class="list-header">
+         <div id="list-total">
+			<span id="" class="results-total" data-i18n="allResults">All Results </span>
+			<span id="periodName" class="period-name results-total"> </span>
+			<span id="results-total" class="results-total"></span>
+          </div>
+		  <div class="list-nav list-nav-top searchpopup-nav" id="viz_valuestable_pager">
+
+		  </div>
+        <div class="list-nav list-nav-top"></div>
+    </div>
+	<div id="scroll_block">
+	    <div class="scrollbar_holder">
+	      <div class="scrollbar"></div>
+	    </div>
+	    <div id="scroll_content">
+		    <div class="list-wrapper results-list-wrapper" id="result_content">
+		    	
+		    </div>
+	    </div>
+	    <div class="scrollbar_holder bottom">
+	      <div class="scrollbar"></div>
+	    </div>
+    </div>
+	<div id="data-refresh">
+		<span data-i18n="searchdata1" class="dataUpdate">Data Last Updated</span> <span id='refresh-time'></span>
+	</div>
+	 <div class="list-nav list-nav-bottom searchpopup-nav" id="viz_valuestable_pager_1"></div>
+    </div>
+</div>
+<script type="text/template" id="table">
+	<div class="outerbox">
+				<%= data.ths %>
+				<!-- rows -->
+				<ul class="list">
+				<%
+				_.each(data.trs, function(tr, rindex) {
+					%>
+						<li>
+						<div class="list-item-row border-bottom orders-row">
+						<%
+						var sorted = '', align = '', canFilter = '', inFilter = -1;
+						_.each(data.cols, function(col, tindex) {
+							canFilter = '';
+							inFilter = $.inArray(col, data.filters);
+							if(inFilter > -1){
+								canFilter = 'col-cursor';
+							}
+							align = '';
+							if(data.currMap[col] === 'NUMBER' || data.currMap[col] === 'INTEGER'){
+								align = 'tdRightAlign';
+							}
+							sorted = '';
+							if(col == data.orderBy) {
+								if(rindex % 2 != 0) sorted = "sorted_even";
+								else sorted = 'sorted_odd';
+							}
+							%>
+							 <span data-index='<%=tindex%>' class="col <%=canFilter%> <%=sorted%> <%=align%>"> <%= tr[col] %></span>
+							<%
+						});
+						%>
+					</div>
+					</li>
+				<%
+				});
+				%>
+				</ul>
+	<div class='clear'></div>
+</div><!-- outerbox -->
+</script>
+<script type="text/template" id="ths">
+	<div class="list-item-header list-item-row border-bottom orders-row">
+	<%
+	var sorted = '';
+	_.each(data.ths, function(th, index) {
+		sorted = ' ';
+		if(data.mapping[index] == data.orderBy) sorted = "isSorted";
+		%>
+		<span  class="col sort_field_container" data-col='<%=data.mapping[index]%>'>
+            <span class="title"> <%= th %></span>
+            <i class='fa fa-sort  <%=sorted%>'></i>
+        </span>
+		<%
+	});
+	%>
+	</div>
+</script>
+<script type="text/template" id="tabs">
+	<ul class="navlist">
+		<%
+			var selected = '', last = '',
+        len = (data.tabs && data.tabs.length) || 0;
+			_.each(data.tabs, function(tab, index) {
+				selected = '', last = '';
+				if(data.current == data.otype[index]) selected = "class='activeLink'";
+        if(index === (len -1)){
+          last ="class='last'";
+        }
+			%>
+			<li <%= last %>> <a  data-tab='<%=data.otype[index]%>' <%= selected %> ><%=tab %> </a> </li>
+			<%
+		});
+		%>
+	</ul>
+</script>
+<script type="text/template" id="pagination">
+	<a class="first nav-pageNumber nav-pageLink <%=data.first%>"><i class="icon-double-angle-left"></i> <span data-i18n="first">first</span></a>
+ 	<a class="previous nav-pageNumber nav-pageLink <%=data.previous%>"><i class="icon-angle-left"></i> <span data-i18n="prev">prev</span></a>
+	<span class="position"><%=data.start%> ~ <%=data.limit%> <span data-i18n="of">of</span> <%=data.totalRows%></span>
+	<a class="next nav-pageNumber nav-pageLink <%=data.next%>"><span data-i18n="next">next</span> <i class="icon-angle-right"></i></a>
+	<a class="last nav-pageNumber nav-pageLink <%=data.last%>"><span data-i18n="last">last</span> <i class="icon-double-angle-right"></i></a>
+</script>
+
+<script type="text/template" id="filter">
+	<div class="dim"></div>
+	<div class="filter-area">
+	  <div class="filter-type"><%= display%> </div>
+	  <div>
+	    <div class="input-append">
+	      <div class="basicSearchInput select2-container-multi inputFieldStyle clearfix" id='<%= name%>_filter'>
+	        <input type="text" search-value="" class="searchInputTextBox" placeholder="search" />
+	        <ul class="select2-choices select-element value">
+	          	<%
+				if(displayValues.length > 0){
+					_.each(displayValues, function(col, tindex) {
+						%>
+						 <li class="select2-search-choice nowrap" data-index='<%= tindex%>' data-item='<%= filterValues[tindex] %>' > <span title='<%= col%>'><%= col%></span>
+						 <i class="fa fa-times itemSelectClose"></i>
+						 </li>
+						<%
+					});
+				}
+				%>
+	        </ul>
+	      </div>
+	      <i id="<%= display%>_btn" class="add-on fa fa-ellipsis-h select-popup-icon"></i>
+	    </div>
+	  </div>
+	</div>
+</script>
+
+<script type="text/template" id="filterSelection">
+	<div class="controlmenu filter-change-menu" style="display: block;">
+		<div class="select2-drop select2-drop-active filterWrapper">
+
+			<div class="selectors values scroll-y filterMsg">
+			</div>
+			<div class="menu" style="display: block;">
+				<a class="button filter" data-i18n="update">Update</a>
+			</div>
+		</div>
+	</div>
+</script>
+<script type="text/template" id="filterListBox">
+	<%
+	_.each(data, function(row, tindex) {
+		%>
+		<li class='<%=row.checked%>'>
+			<div class="list-item-row list-item-element-row border-bottom" style="width: 550px;">
+				<span class="select-column <%= row.count%>" style="width: 150px;">
+					<input <%=row.checked%> type="checkbox" name="selectedElement" value="<%= row.value%>"></span>
+					<span class="person-first-name-column " >
+					<span class=""><%= row.value %></span>
+				</span>
+			</div>
+		</li>
+		<%
+	});
+	%>
+</script>
+<script type="text/template" id="filterBox">
+<div class="modal hide fade criteria-modal in" id="" aria-hidden="false" style="display: block;">
+        <div class="page-title-box">
+            <span class="page-title">Select <%= filterName%></span>
+            <div class="popup-select-item-controls top order-pop-controls-button">
+                <span class="cancel-select-button" id="cancelFilterPopup" >
+                    <i class="fa fa-times-circle cancel-selection"></i>
+                    <span data-i18n="cancel" class='cancel-selection'>Cancel</span>
+                </span>
+                <span id="selectFilterPopup" class="select-element-button done-button x-button deactive">Select</span>
+            </div>
+        </div> <!-- Wrapper for search/filter and list columns -->
+        <div id="inner-content" class="order-modal modal-body criteria-modal-body">
+            <!-- Search/filter -->
+            <div class="sidebar popup-sidebar">
+                <div class="filter-box search-box order-filter-box">
+                    <div class="search-text-label search-header">Find <%= filterName%></div>
+
+                    <div>
+                        <span class="k-textbox k-space-right" style="width:146px"><input class="search-text" id="search-text" type="text"><a class="k-icon k-i-search search-button" href="#" id="search-button">&nbsp;</a></span> <a class="k-button clear-search" id="clear-search"><span class="k-icon k-i-close"></span></a>
+                    </div>
+                </div><!-- Filter -->
+
+                <div class="filter-box order-filter-box">
+                    <div class="filter-text" data-i18n="filters">Filters</div><br>
+                    <div class="filter-type" data-i18n="selectType">Select Type</div>
+                    <input checked="checked" name="selectType" type="radio" value="All"> <span data-i18n="all">All</span><br>
+                    <input name="selectType" type="radio" value="Selected">
+                    <span data-i18n="selected">Selected</span><br>
+                </div>
+
+
+            </div>
+
+            <div class="list-pane criteria-list-pane" id="list">
+                <!-- Currently selected elements -->
+
+                <div id="selected-element-div" style="display: none">
+                    <div class="list-header">
+                        <div class="selected-items-header selected-items-header-popup">
+                            <span class="results-total currently-selected-element">Search Results <%= filterName%></span>
+                        </div>
+                    </div>
+
+                    <div id="selectedElementHeader" class="list-wrapper current-element-wrapper element-list-wrapper"><div class="list-item-header list-item-element-header list-item-row border-bottom" style="display: block; width: 550px;">
+    <span class="select-column select-column-header" data-i18n="select" style="width: 150px; text-align: left;">Select</span>
+
+    <span class="grid-column" style="width: 150px; text-align: left;">
+    <span data-i18n="<%= filterName%>" data-sort-field="<%= filterName%>" class="title">Name</span>
+   <!--  <span class="isSorted sorterAscImage sort_icon" data-sort-field="<%= filterName%>"></span> -->
+    </span>
+</div>
+                        <div class="element-list-parent">
+                            <ul class="list" id="selected-element-list"></ul>
+                        </div>
+                    </div>
+                </div><!-- List Header -->
+
+                <div id="all-element-div">
+                    <div class="list-header">
+                        <div id="list-total" class="list-total list-total-popup">
+                            <span class="results-total" data-i18n="allResults" id="all-results-label">All Results</span>
+                            <span class="results-total" data-i18n="searchResults" id="search-results-label" style="display: none;">Search Results</span> <span class="results-total" id="results-total-filter"></span>
+                        </div>
+
+
+                    </div><!-- List Body -->
+                    <div id="allElementHeader" class="list-wrapper results-list-wrapper element-list-wrapper"><div class="list-item-header list-item-element-header list-item-row border-bottom" style="display: block; width: 550px;">
+    <span class="select-column select-column-header" data-i18n="select" style="width: 150px; text-align: left;" >Select</span>
+
+    <span class="grid-column" style="width: 150px; text-align: left;">
+    <span data-i18n="columnName" data-sort-field="" class="title">Name</span>
+    <span class="isSorted sorterAscImage sort_icon" data-sort-field=""></span>
+    </span>
+</div>
+                        <div class="element-list-parent">
+                            <ul class="list element-list" id="filter-element-list"></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </script>
+<script type="text/template" id="refreshDialog">
+
+	<table width='100%' border='0' class='refreshTables'>
+		<tbody>
+			<tr>
+				<td >
+					<div class="modal-label-right" data-i18n="lastRefresh">Last search data refresh:</div>
+				</td>
+				<td>
+					<div class="modal-label-left"><%=lastRefresh %></div>
+				</td>
+			</tr>
+
+			<tr>
+				<td>
+					<div class="modal-label-right" data-i18n="nextRefresh">Next scheduled refresh:</div>
+				</td>
+				<td>
+					<div class="modal-label-left" id='nextRefersh'><%=nextRefersh %></div>
+				</td>
+			</tr>
+
+			<tr>
+				<td>
+					<div class="modal-label-right" data-i18n="refreshStatus">Status:</div>
+				</td>
+				<td>
+					<div class="modal-label-left" id='refreshStatus'><%=status %></div>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+		<%
+		if(enableButton){
+		%>
+			<div class='startrefreshbtn'>
+				<span id="startrefresh" class="x-button" style="font-size:11px" data-i18n="refreshNow">Start Refresh Now</span>
+			</div>
+		<%
+		}
+		%>
+
+	<div class="clearfix"></div>
+</script>
+
+<script type="text/template" id="modalTemplate">
+    <div class="modal-header roundedDiv">
+        <button aria-hidden="true" data-dismiss="modal" class="close dclose" type="button">×</button>
+       <h3><%= title %></h3>
+    </div>
+  <div class="modal-body"><%= content %></div>
+  <div class="modal-footer">
+		<span id="refProgressMsg" style="float:left; text-align:left;font-size:11px; color:#333; display:none;"></span>
+		<div class="clear"></div>
+		<span id="cancelBtn" class="cancelButton x-cancel-button cancel" style="position:relative;left:-30px;top:2px">
+			<span id="cancelBtnLabel" class="cancel "  data-i18n="close">Close</span>
+		</span>
+  </div>
+</script>
+<script type="text/template" id="LastRefreshTemplate">
+<%
+
+	%>
+	<span data-i18n="searchdata1">Search Data as of </span>
+	<span id='lastrefreshTime'><%= data.formattedTime %></span>
+	<span id='viewmore' >
+		(<a class='viewmore'><%= data.elapsedTime %></a>)
+	</span>
+	<span id='workingNote'></span>
+</script>
+
+<!-- spinner, remove class "hide" to show it and add class "hide" to hide it -->
+<div class="pagespinner hide"><i class="icon-spinner icon-spin icon-4x"></i></div>
+
+<div style="display:none;" class="modal" id='download-dialog'>
+		  <div class="modal-header roundedDiv">
+			<button aria-hidden="true" data-dismiss="modal" class="close dclose" type="button">×</button>
+			<h3 data-i18n="download">Download File</h3>
+		  </div>
+		  <div class="modal-body">
+			<div>
+<div class="text-label" style="float:left; margin: 0 40px;" ><span data-i18n="downloadName">Download Name</span><span class='req'>*</span>: </div>
+<div style="float:left"><input class='downloadname' style="border: 1px solid #cccccc; border-radius:0;" type-"text"="" name="filename" id="filename" tabindex="1"></div>
+<div class="clearfix" style="margin: 10px;"><br></div>
+<div class="text-label" style="float:left; margin: 10px 35px;"><span data-i18n="downloadFormat">Select Download Format</span><span class='req'>*</span>: </div>
+<div style="float:left">
+	<select id="flieType" tabindex="2">
+		<option value="1">CSV</option>
+		<!--<option value="2">TXT</option>-->
+	</select>
+</div>
+<div class="clearfix"></div>
+</div>
+</div>
+<div class="modal-footer">
+	<div>
+		<span id="progressMsg" style="float:left; text-align:left;font-size:11px; color:#333; display:none;"></span>
+	</div>
+	<div class="clear"></div>
+	<div class='footer-elements'>
+		<span id="cancelBtn" class="cancelButton x-cancel-button dclose" style="position:relative;left:-30px;top:2px">
+			<span id="cancelBtnLabel" data-i18n="cancel" tabindex="3">Cancel</span>
+		</span>
+		<span id="downloadBtn" class="doneButton x-button-enabled x-button primary" labelid="download" style="font-size:11px" data-i18n="download" tabindex="4">Download</span>
+		<span id="ok-Btn" class="doneButton x-button-enabled x-button primary hide dclose" labelid="ok" style="font-size:11px" data-i18n="ok" >OK</span>
+	</div>
+</div>
+</div> <!-- end download-dialog -->
+<div id='transparentbkg' class=""></div> <!-- end transparent bkg for download -->
+
+
+
+<div id="download-modal-container" class="modal hide">
+	<div class="modal-header">
+		<button type="button" class="close mclose" data-dismiss="modal">×</button>
+		<h3>Download Message</h3>
+	</div>
+	<div class="modal-body">
+		<span id="confirm-message"></span>
+	</div>
+	<div class="modal-footer">
+		<span id="cancel-button" class="cancel-button x-cancel-button" data-dismiss="modal" style="display: none;">
+			<span data-i18n="cancel">Cancel</span>
+		</span>
+		<span id="confirm-button" data-i18n="ok" class="done-button x-button x-button-enabled">OK</span>
+	</div>
+</div>

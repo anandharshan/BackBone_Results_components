@@ -1,0 +1,112 @@
+<div id="ppaResultsListView-div">
+    <!-- List Header -->
+    <div class="list-wrapper results-list-wrapper">
+        <div class="list-item-header list-item-row border-bottom">
+            <span class="resultsPPA-PeriodCol" style="left: 10px;position: relative;">
+                <span data-i18n="ppaPeriod">Period</span>
+            </span> 
+            <span class="resultsPPA-latestBalance" style="width: 170px;text-align: right;padding-right:70px">
+                <span data-i18n="ppaListView-latestBalance">Latest Balance</span>
+            </span>
+            <span class="resultsPPA-asOfPeriod">
+                <span data-i18n="ppaAsOfPeriod">As of Period</span>
+            </span>
+            <span class="resultsPPA-originalBalance" style="width: 195px;text-align: right;">
+                <span data-i18n="ppaListView-originalBalance">Original Balance</span>
+            </span>
+            <span class="resultsPPA-changeCol" style="width: 190px;text-align: right;">
+                <span data-i18n="ppaListView-change">Change</span>
+            </span>
+        </div>
+        <div>
+            <ul class="list" id="ppaPeriods-list" style="display:none;">
+                <% _.each(periodData, function(periodId, outerIndex){ %>
+                        <% _.each(periodResultWSOMap, function(periodRow,index){ %>
+                            <% _.each(periodRow, function(i,index){ %>
+                                    <% if(i.isLatest && periodId.id == i.periodId) { %>
+                                        <div class="list-item-row border-bottom" data-periodid="<%= i.periodId %>" data-asofperiodid="<%= i.asOfPeriodId %>">
+                                        <div>
+                                            <span class="resultsPPA-PeriodCol"><%- i.periodStr %></span>
+                                            <span class="resultsPPA-latestBalance"><%- i.asOfPeriodAmountStr %></span>
+                                            <span class="resultsPPA-unitType"><%- unitTypeStr %></span>
+                                            <span class="resultsPPA-asOf" data-i18n="ppaListView-asOf">as of</span>
+                                            <span class="resultsPPA-asOfPeriod">
+                                                <%- i.asOfPeriodStr %>
+                                            </span>
+                                            <span class="resultsPPA-originalBalance"><%- i.originalAmountStr %>&nbsp;<%- unitTypeStr %></span>
+                                            <span class="resultsPPA-changeCol"><%- i.changeAmountStr %>&nbsp;
+                                                <%- unitTypeStr %>&nbsp;
+                                                <% if(i.changeAmount > 0){ %>
+                                                    <i class="fa fa-arrow-circle-up arrowCells arrowCellsUp"></i>
+                                                <% } if(i.changeAmount < 0){ %>
+                                                    <i class="fa fa-arrow-circle-down arrowCells arrowCellsDown"></i>
+                                                <% } if(i.changeAmount === 0) { %> 
+                                                    <i class="fa fa-circle-thin arrowCells"></i>
+                                                <% } %>
+                                            </span>
+                                        </div>
+                                        <div class="list-item-detail row-fluid">
+                                            <fieldset>
+                                                <div class="legend selected" data-id="batch-details-<%= i.periodId %>">Details</div>
+                                                <div class="expanded-container">
+                                                    <div class="tab-content detail-container batch-details-<%= i.periodId %>" data-name="<%= i.periodId %>">
+                                                    </div>
+                                                </div>
+                                            </fieldset>
+                                        </div>
+                                        </div>
+                                    <% } %>
+                            <% });%>
+                        <% });%>
+
+                <% });%>
+                
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+
+<style>
+.list-item-row {
+    padding: 0px 0 8px 0px;
+}
+.resultsPPA-PeriodCol{
+    width:150px;
+}
+.resultsPPA-latestBalance{
+    width:130px;
+    text-align: right;
+}
+.resultsPPA-unitType{
+    width:100px;
+}
+.resultsPPA-asOfPeriod{
+    width:150px;
+}
+.resultsPPA-originalBalance{
+    width:150px;
+    text-align: right;
+}
+.resultsPPA-changeCol {
+    width:200px;
+    text-align: right;
+}
+#resultsPPA-view.page-container{
+    min-width: 1360px;
+}
+#ppaPeriods-list div{
+    padding: 3px 0px 4px 3px !important;
+}
+.arrowCells{
+    float: right;
+    margin-top: 2px;
+}
+.arrowCellsUp{
+    color:green;
+}
+.arrowCellsDown{
+    color:#346F8F;
+}
+</style>

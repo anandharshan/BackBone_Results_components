@@ -1,0 +1,84 @@
+<div class="horizontal-container">
+    <table>
+        <thead>
+            <tr class="page-title-box">
+                <th class="" data-i18n="ppaPeriod">Period</th>
+                <th class="" data-i18n="ppaDetailsTotal" style="text-align:right">Total</th>
+                <th class="" data-i18n="ppaAsOfPeriod">As of Period</th>
+                <th class="" data-i18n="ppaDetailsChange" style="text-align:right">Change</th>
+            </tr>
+        </thead>
+        <tbody class="details-body">
+        	<% _.each(detailsData, function(item, index){ %>
+        		<tr data-page="<%- item.periodId %>">
+			  		<td>
+			  			<%- item.periodStr %>&nbsp;
+			  			<% if(item.isOriginal && item.isLatest) { %>
+			  				<span class="originalTextStyle" data-i18n="ppaOriginal">(Original)</span>
+                        <% } if(item.isLatest && !item.isOriginal) { %>
+                        	<span class="originalTextStyle" data-i18n="ppaLatest">(Latest)</span>
+                        <% } if(!item.isLatest && item.isOriginal) { %>
+                        	<span class="originalTextStyle" data-i18n="ppaOriginal">(Original)</span>
+                        <% } %>
+			  		</td>  
+			  		<td style="text-align:right"><%- item.totalAmountStr %>&nbsp<%- unitTypeStr%></td>
+			  		<td>as of <%- item.asOfPeriodStr %></td>  
+			  		<td style="text-align:right">
+			  			<% if(item.isOriginal) { %>
+			  				<span class="originalTextStyle" data-i18n="ppaDetailsOriginalMsg">Original Processing Period</span>&nbsp
+			  			<% } else { %>
+			  				<%- item.changeAmountStr %>&nbsp<%- unitTypeStr%>&nbsp
+			  			<% } %>
+			  			
+			  			<% if(item.changeAmount > 0){ %>
+							<i class="fa fa-arrow-circle-up arrowCells arrowCellsUp"></i>
+						<% } if(item.changeAmount < 0){ %>
+							<i class="fa fa-arrow-circle-down arrowCells arrowCellsDown"></i>
+						<% } if(item.changeAmount === 0) { %> 
+							<i class="fa fa-circle-thin arrowCells"></i>
+						<% } %>
+			  		</td>
+				</tr>
+        	<% }); %>
+        </tbody>
+    </table>
+</div>
+
+<style>
+.horizontal-container .page-title-box{
+	background-color: #EEE;
+}
+.horizontal-container table{
+	width:100%;
+}
+.details-body{
+	background-color: #FFF;
+}
+.list-item-detail.row-fluid{
+	max-height: 300px;
+    overflow-y: auto;
+}
+.horizontal-container{
+	width:99%;
+}
+
+.details-body tr {
+    font-weight: normal;
+    font-size: 11px;
+}
+.arrowCells{
+	float: right;
+	margin-top: 2px;
+}
+.arrowCellsUp{
+	color:green;
+}
+.arrowCellsDown{
+	color:#346F8F;
+}
+span.originalTextStyle{
+	vertical-align: top !important;
+    top: -1px;
+    position: relative;
+}
+</style>

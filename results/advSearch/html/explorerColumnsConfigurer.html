@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
+        <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+        <META HTTP-EQUIV="Expires" CONTENT="-1">
+        <link href="../css/xactly.css" rel="stylesheet" type="text/css">
+        <link href="../css/xactly-incent.css" rel="stylesheet" type="text/css">
+        <link href="../css/jquery.treeview.css" rel="stylesheet" />
+        <link href="../../../lib/jquery-ui/themes/smoothness/jquery-ui.min.css" rel="stylesheet">
+        <link href="../css/breadcrumb/xbreadcrumbs.css" rel="stylesheet" type="text/css">
+        <script data-main="../../advSearch/js/common/lib/settings-main.js" src="../../../common/lib/requirejs/js/require-jquery.js"></script>
+        <script src="../../advSearch/js/utils/mischelpers.js" ></script>
+        <script src="../../advSearch/js/DataLoader/settings-page_app.js" ></script>
+
+    </head>
+    <body onload=" resizeWorkspace();" id="settingContent">
+        <div id="settingWrapper" class='bodycontent'>
+            <div>
+                <ul class="xbreadcrumbs" id="breadcrumbs-3">
+                    <li>
+                        <span id="homeLink" data-i18n="home">Home</span>
+                    </li>
+                    <li>
+                        <a href="#" id="advSearchLink"  data-i18n="advsearch" onclick="gotoSearch()">Advanced Search</a>
+                    </li>
+                    <li class="current">
+                        <a href="#"><span data-i18n="settings">Settings</span></a>
+                    </li>
+
+                </ul>
+            </div>
+            <br/>
+            <br/>
+
+            <div id="buttons_top" style="text-align: center">
+                <button value="Cancel" onClick="goHome()"><span data-i18n="cancel">Cancel</span></button>
+                <button value="Save Changes" onClick="saveChanges()"><span data-i18n="savechanges">Save Changes</span></button>
+                <button type="button" id="save_defaults" value="Save Current Settings as Company Defaults" onClick="saveCompanyDefaults()"><span data-i18n="savecompany">Save Current Settings as Company Defaults</span></button>
+                <button type="button" value="Reset to Company Defaults" onClick="reset()"><span data-i18n="resetcompany">Reset to Company Defaults</span></button>
+            </div>
+            <div>
+                <ul id="alloptions">
+                    <li><span style="font-weight: bold; "><span data-i18n="changeFilter">Change Filter Fields</span></span>
+                        <ul>
+                            <div width="50%">
+                                <table style="margin: 10px" border="0">
+                                    <tbody>
+
+                                        <tr>
+                                            <td class="dd_selectbox">
+                                                <div class="dd_header_dlg" id="header2_" nowrap=""><span data-i18n="availableFilters">Available Filter Fields</span></div>
+                                                <ul id="left_list_1" class="ddlist_dlg">
+                                                </ul>
+                                            </td>
+                                            <td align="center" width="60">
+                                                <table cellpadding="3" border="0"
+                                                    style="vertical-align: middle">
+                                                    <tbody>
+
+                                                        <tr>
+                                                            <td><a id="moveAllRight_"
+                                                                onclick="moveList_(null, 'left_list_1', 'right_list_1', true)"><img
+                                                            border="0" src="../images/uiclient/nav/right_all_arrow.gif"></a></td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td><a id="moveRight_"
+                                                                onclick="moveList_(null, 'left_list_1', 'right_list_1', false)"><img
+                                                            border="0" src="../images/uiclient/nav/right_arrow.gif"></a></td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td><a id="moveLeft_"
+                                                                onclick="moveList_(null, 'right_list_1', 'left_list_1', false);"><img
+                                                            border="0" src="../images/uiclient/nav/left_arrow.gif"></a></td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td align="center"><a id="moveAllLeft_"
+                                                                onclick="moveList_(null, 'right_list_1', 'left_list_1', true)"><img
+                                                            border="0" src="../images/uiclient/nav/left_all_arrow.gif"></a></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                            <td class="dd_selectbox">
+
+
+                                                <div class="dd_header_dlg" id="header1_" nowrap=""><span data-i18n="selectedFilters">Selected Filter Fields</span></div>
+                                                <ul id="right_list_1" class="ddlist_dlg">
+                                                </ul>
+
+
+                                            </td>
+                                            <td valign="middle">
+                                                <div class="dd_header_dlg"  nowrap="">
+                                                    <span data-i18n="orderHelp">To reorder,drag and drop fields and click save changes</span>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </ul></li>
+                        <li><span style="font-weight: bold;">
+                            <span data-i18n="changeColumns">Change Columns</span> </span>
+                            <ul>
+                                <div>
+                                    <table style="margin: 10px" border="0">
+                                        <tbody>
+
+                                            <tr>    <td> <span data-i18n="selectTab">Select Tab:</span>
+                                                <select id="dataObjectsCombo"  type="dataobjects" class="dataobjects" style="border: 1px solid #7F9DB9" >
+                                                </select>  </tr>
+                                                <tr>
+                                                    <td class="dd_selectbox">
+                                                        <div class="dd_header_dlg" id="header2_" nowrap=""><span data-i18n="availableColumns">Available Columns</span></div>
+                                                        <ul id="left_list_2" class="ddlist_dlg">
+                                                        </ul>
+                                                    </td>
+                                                    <td align="center" width="60">
+                                                        <table cellpadding="3" border="0"
+                                                            style="vertical-align: middle">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td><a id="moveAllRight_"
+                                                                        onclick="moveList_(null, 'left_list_2', 'right_list_2', true);updateSelectedColumns();"><img
+                                                                    border="0" src="../images/uiclient/nav/right_all_arrow.gif"></a></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td><a id="moveRight_"
+                                                                        onclick="moveList_(null, 'left_list_2', 'right_list_2', false);updateSelectedColumns();"><img
+                                                                    border="0" src="../images/uiclient/nav/right_arrow.gif"></a></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td><a id="moveLeft_"
+                                                                        onclick="moveList_(null, 'right_list_2', 'left_list_2', false);updateSelectedColumns();"><img
+                                                                    border="0" src="../images/uiclient/nav/left_arrow.gif"></a></td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td align="center"><a id="moveAllLeft_"
+                                                                        onclick="moveList_(null, 'right_list_2', 'left_list_2', true);updateSelectedColumns();"><img
+                                                                    border="0" src="../images/uiclient/nav/left_all_arrow.gif"></a></td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </td>
+                                                    <td class="dd_selectbox">
+                                                        <div class="dd_header_dlg" id="header1_" nowrap=""><span data-i18n="selectedColumns">Selected Columns</span></div>
+                                                        <ul id="right_list_2" class="ddlist_dlg">
+                                                        </ul>
+                                                    </td>
+                                                    <td valign="middle">
+                                                        <div class="dd_header_dlg"  nowrap="">
+                                                            <span data-i18n="orderHelp">To reorder,drag and drop fields and click save changes</span>
+                                                        </div>
+                                                    </td>
+
+                                                </tr>
+
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+
+                                </ul>
+
+                            </li>
+                            <li><span style="font-weight: bold;"> <span data-i18n="changeTabs">Change Tabs</span></span>
+                                <ul>
+                                    <div >
+                                        <table style="margin: 10px" border="0">
+                                            <tbody>
+
+                                                <tr>
+                                                    <td class="dd_selectbox">
+                                                        <div class="dd_header_dlg" id="header1_" nowrap=""><span data-i18n="availableTabs">Available Tabs</span></div>
+                                                        <ul id="left_list_3" class="ddlist_dlg">
+                                                        </ul>
+                                                    </td>
+                                                    <td align="center" width="60">
+                                                        <table cellpadding="3" border="0"
+                                                            style="vertical-align: middle">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td><a id="moveAllRight_"
+                                                                        onclick="moveList_(null, 'left_list_3', 'right_list_3', true);updateTabVisiblity();"><img
+                                                                    border="0" src="../images/uiclient/nav/right_all_arrow.gif"></a></td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td><a id="moveRight_"
+                                                                        onclick="moveList_(null, 'left_list_3', 'right_list_3', false);updateTabVisiblity();"><img
+                                                                    border="0" src="../images/uiclient/nav/right_arrow.gif"></a></td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td><a id="moveLeft_"
+                                                                        onclick="moveList_(null, 'right_list_3', 'left_list_3', false);updateTabVisiblity();"><img
+                                                                    border="0" src="../images/uiclient/nav/left_arrow.gif"></a></td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td align="center"><a id="moveAllLeft_"
+                                                                        onclick="moveList_(null, 'right_list_3', 'left_list_3', true);updateTabVisiblity();"><img
+                                                                    border="0" src="../images/uiclient/nav/left_all_arrow.gif"></a></td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </td>
+                                                    <td class="dd_selectbox">
+                                                        <div class="dd_header_dlg" id="header2_" nowrap=""><span data-i18n="selectedTabs">Selected Tabs</span>
+                                                        </div>
+                                                        <ul id="right_list_3" class="ddlist_dlg">
+                                                        </ul>
+                                                    </td>
+                                                    <td valign="middle">
+                                                        <div class="dd_header_dlg"  nowrap="">
+                                                            <span data-i18n="orderHelp">To reorder,drag and drop fields and click save changes</span>
+                                                        </div>
+                                                    </td>
+
+                                                </tr>
+
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+                                </ul>
+
+                            </li>
+
+                        </ul>
+                    </div>
+
+                    <div id="buttons_bottom" style="text-align: center">
+                        <button value="Cancel" onClick="goHome()"><span data-i18n="cancel">Cancel</span></button>
+                        <button value="Save Changes" onClick="saveChanges()"><span data-i18n="savechanges">Save Changes</span></button>
+                        <button type="button" id="save_defaults" value="Save Current Settings as Company Defaults" onClick="saveCompanyDefaults()"><span data-i18n="savecompany">Save Current Settings as Company Defaults</span></button>
+                        <button type="button" value="Reset to Company Defaults" onClick="reset()"><span data-i18n="resetcompany">Reset to Company Defaults</span></button>
+                    </div>
+                    <div id="dialog-modal" title="Changes Saved">
+                        <p><span data-i18n="changesSaved">Changes to the settings were saved successfully.</span></p>
+                    </div>
+                    <div id="dialog-modal-error" title="Error">
+                        <p id='error-p'></p>
+                    </div>
+                    <div id="dialog-modal-business" title="Company Defaults Saved">
+                        <p><span data-i18n="companyDefaultsSaved">All current settings were saved as the Company Defaults.</span></p>
+                    </div>
+                    <div id="dialog-modal-changes" title="Do you want to save changes?">
+                        <p style='text-align:center;'>
+                        <span data-i18n="leaveThisPage">Your changes will be lost if you don't save them.</span>
+                        </p>
+                    </div>
+                    <div style="clear:both; height:10px;"><br></div>
+                    </div><!-- .content -->
+                    <!--<div class="pagespinner"><i class="icon-spinner icon-spin icon-4x"></i></div>-->
+                    <body>
+
+                    </html>

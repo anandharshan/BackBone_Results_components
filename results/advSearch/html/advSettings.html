@@ -1,0 +1,256 @@
+<div class="clearfix page-container saved-search-details-view goldUI" id="savedSearchDetailsView">
+    <div class="page-title-box">
+        <span class="page-title">Settings</span>
+        <span class="page-actions">
+            <span class="cancel-select-button">
+                <i class="fa fa-times-circle"></i>
+                <span data-i18n="cancel"> Cancel</span>
+        </span>
+        <span class="adv-search-button x-button x-button-enabled create" data-i18n="save">Save</span>
+        </span>
+    </div>
+    <div class="inner-content clearfix">
+        <div class="row-fluid" id='errorGutter'></div>
+        <div class="form-item">
+            <div class="form-label-container">
+                <label for="">
+                    <span data-i18n="searchFields">Search Fields</span><span>:</span>
+                </label>
+            </div>
+            <div class="form-input-container">
+                <div class="form-input-help form-tag-customStyle" data-i18n="savedSearchFieldsPrompt">Which search fields and search criteria would you like to display?</div>
+                <p class="hint" data-i18n="savedSearchFieldsHint">*You can select a maximum of 10 filters to display.</p>
+                <div>
+                        <div class="list-item-header list-item-row border-bottom" style="padding: 8px;width:892px;margin-top:10px;">
+                            <span class="searchOrder" data-i18n="order"></span>
+                            <span class="searchField" data-i18n="searchFields"></span>
+                            <span class="removeCriteria"></span>
+                        </div>
+
+                    <ul data-type='filter_order' class="fields-table search-fields list ui-sortable" id="details-search-fields" style="padding: 0px 8px;width:900px;">
+                    </ul>
+
+                    <div class="add-fields-container" data-field-type="searchFields" id="addSearchFieldsLink">
+                        <i class="fa fa-plus"></i>
+                        <span data-i18n="addSearchFieldsLink">Add Search Fields</span>
+                    </div>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+        <div class="form-item">
+            <div class="form-label-container">
+                <label for="">
+                    <span data-i18n="columns">Columns</span><span>:</span>
+                </label>
+            </div>
+            <div class="form-input-container">
+                <div class="form-input-help form-tag-customStyle" data-i18n="savedSearchColumnsPrompt">Which columns would you like to display? Please note that these columns will be displayed to all admins for all businesses.</div>
+                <div class="popup-select-item-controls viz_tabs" id="setting_viz_tabs"></div>
+              
+                <div>
+                    <div class="list-item-header list-item-row border-bottom" style="padding: 8px;width:892px;margin-top:10px;">
+                            <span class="searchOrder" data-i18n="order"></span>
+                            <span class="searchField" data-i18n="column"></span>
+                            <span class="removeCriteria"></span>
+                        </div>
+
+                    <ul class="fields-table details-columns list ui-sortable" id="details-columns"
+                    style="padding: 0px 8px;width:900px;">
+                    </ul>
+                    <div class="add-fields-container" id="addColumnsLink" data-field-type="columns">
+                        <i class="fa fa-plus"></i>
+                        <span data-i18n="addColumns"> Add Columns </span>
+                    </div>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+    <div class="page-title-box page-footer-box">
+        <span class="page-actions">
+            <span class="cancel-select-button">
+                <i class="fa fa-times-circle"></i>
+                <span data-i18n="cancel"> Cancel</span>
+        </span>
+        <span class="adv-search-button x-button x-button-enabled create" data-i18n="save">Save</span>
+        </span>
+    </div>
+</div>
+
+<script type="text/template" id="filterBox">
+<div class="modal-backdrop fade in"></div>
+<div class="modal hide fade criteria-modal in" id="" aria-hidden="false" style="display: block;">
+        <div class="page-title-box">
+            <span class="page-title">Select <%= colName%></span>
+            <div class="popup-select-item-controls top order-pop-controls-button">
+                <span class="cancel-select-button">
+                    <i class="fa fa-times-circle"></i>
+                    <span data-i18n="cancel" id="cancelFilterPopup">Cancel</span>
+                </span>
+                <span id="selectFilterPopup" class="select-element-button done-button x-button x-button-enabled">Select</span>
+            </div>
+        </div>
+        <div id="inner-content" class="order-modal modal-body criteria-modal-body">
+            <!-- Search/filter -->
+            <div class="sidebar popup-sidebar">
+                <div class="filter-box search-box order-filter-box">
+                    <div class="search-text-label search-header">Find <%= colName%></div>
+
+                    <div>
+                        <span class="k-textbox k-space-right" style="width:146px"><input class="search-text" id="search-text" type="text"><a class="k-icon k-i-search search-button" href="#" id="search-button">&nbsp;</a></span> <a class="k-button clear-search" id="clear-search"><span class="k-icon k-i-close"></span></a>
+                    </div>
+                </div><!-- Filter -->
+
+                <div class="filter-box order-filter-box">
+                    <div class="filter-text" data-i18n="filters">Filters</div><br>
+                    <div class="filter-type" data-i18n="selectType">Select Type</div>
+                    <input checked="checked" name="selectType" type="radio" value="All"> <span data-i18n="all">All</span><br>
+                    <input name="selectType" type="radio" value="Selected">
+                    <span data-i18n="selected">Selected</span><br>
+                </div>
+            </div>
+
+            <div class="list-pane criteria-list-pane" id="list">
+                <!-- Currently selected elements -->
+                <div id="selected-element-div" style="display: none">
+                    <div class="list-header">
+                        <div class="selected-items-header selected-items-header-popup">
+                            <span class="results-total currently-selected-element">Search Results <%= colName%></span>
+                        </div>
+                    </div>
+
+                    <div id="selectedElementHeader" class="list-wrapper current-element-wrapper element-list-wrapper">
+                      <div class="list-item-header list-item-element-header list-item-row border-bottom" style="display: block; width: 550px;">
+                        <span class="select-column select-column-header" data-i18n="select" style="width: 150px; text-align: left;">Select</span>
+                        <span class="grid-column" style="text-align: left;">
+                          <span data-i18n="<%= colName%>" data-sort-field="<%= colName%>" class="title">Name</span>
+                        </span>
+                      </div>
+                        <div class="element-list-parent">
+                            <ul class="list" id="selected-element-list"></ul>
+                        </div>
+                    </div>
+                </div><!-- List Header -->
+
+                <div id="all-element-div">
+                    <div class="clearfix" id="errorGutter" data-i18n='minimumSelectMsg'>At least one item should be selected</div>
+                    <div class="list-header">
+                        <div id="list-total" class="list-total list-total-popup">
+                            <span class="results-total" data-i18n="allResults" id="all-results-label">All Results</span>
+                            <span class="results-total" data-i18n="searchResults" id="search-results-label" style="display: none;">Search Results</span> <span class="results-total" id="results-total-filter"></span>
+                        </div>
+                    </div><!-- List Body -->
+                    <div id="allElementHeader" class="clearfix element-list-wrapper">
+                      <div class="list-item-header list-item-element-header list-item-row border-bottom" style="display: block; width: 550px;">
+                        <span class="select-column select-column-header" data-i18n="select" style="width: 150px; text-align: left;" >Select</span>
+
+                        <span class="grid-column" style="width: 150px; text-align: left;">
+                          <span data-i18n="columnName" data-sort-field="" class="title">Name</span>
+                          <span class="isSorted sorterAscImage sort_icon" data-sort-field=""></span>
+                        </span>
+                      </div>
+                      <div class="element-list-parent">
+                          <ul class="list element-list" id="filter-element-list"></ul>
+                      </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </script>
+
+<script type="text/template" id="settingTabs">
+    <ul class="navlist">
+        <%
+            var selected = '';
+            _.each(data.tabs, function(tab, index) {
+                selected = '';
+                if(data.current == data.otype[index]) selected = "class='activeLink'";
+            %>
+            <li> <a  data-tab='<%=data.otype[index]%>' <%= selected %>><%=tab %> </a> </li>
+            <%
+        });
+        %>
+    </ul>
+    <span class='tab-selector'><i class='fa fa-cog'></i></span>
+</script>
+
+<script type="text/template" id="tab-list-tmpl">
+<%
+    var selected = '', displayName = '';
+    _.each(data.orderedtabs, function(tab, index) {
+        displayName = data.allTabs[tab].name;
+        selected = (data.selectedTabs.indexOf(tab) === -1) ? 'fa-square-o' : 'fa-check-square';
+        if(!data.allTabs[tab].visible){
+            selected = 'fa-square-o';
+        }
+        %>
+        <li class='tab-item list-item-row border-bottom' data-visible='<%=data.allTabs[tab].visible %>' data-index='<%=index %>' data-name='<%= tab %>'>
+            <span class='searchOrder'>
+                <span class='counter'><%=index+1 %></span> 
+                <%
+                //if(index< data.selectedTabs.length-1){
+                    %>
+                    <i class='fa fa-caret-down move' data-index='<%=index %>' data-direction='down'></i> 
+                    <%
+                //}
+                //if(index > 0){
+                    %>
+                    <i class='fa fa-caret-up move' data-index='<%=index %>' data-direction='up'></i>
+                    <%
+               // }
+                %>
+            </span>
+            <span class='searchField'>
+                <i class='fa <%=selected%> select'></i> 
+                <span>
+                    <%= displayName %>
+                </span>
+            </span>                        
+        </li>
+        <%
+    });
+%>
+</script>
+
+<script type="text/template" id="tab-selection-tmpl">
+    <div class="modal-backdrop fade in"></div>
+    <div class="modal hide fade in" id="" aria-hidden="false" style="display: block;">
+        <div class='tab-selection border-box-top'>
+            <div class="page-title-box clearfix">
+                <span class="page-title">
+                    <span data-i18n='tabHeaderTitle' class='tabHeaderTitle'>Data Tabs:</span>
+                    <span data-i18n='tabHeaderMsg' class='tabHeaderMsg'>Which tabs wouldyou like to display?</span>
+                </span>
+                <span class="page-actions">
+                    <span class="cancel-select-button">
+                        <i class="fa fa-times-circle"></i>
+                        <span data-i18n="cancel"> Cancel</span>
+                </span>
+                <span class="savetabs x-button x-button-enabled" data-i18n="save">Save</span>
+                </span>
+            </div>
+            <div class="row-fluid" id="errorGutter"></div>
+            <div class='tab-container'>
+                <div class="list-item-header list-item-row ">
+                    <span class="searchOrder" data-i18n="order">Order</span>
+                    <span class="searchField" data-i18n="tab">Tab</span>
+                </div>
+
+                <ul class="list ui-sortable" id='tab-list'>
+                    
+                </ul>
+            </div>
+            <div class="page-title-box">
+                <span class="page-actions">
+                    <span class="cancel-select-button">
+                        <i class="fa fa-times-circle"></i>
+                        <span data-i18n="cancel"> Cancel</span>
+                </span>
+                <span class="savetabs x-button x-button-enabled" data-i18n="save">Save</span>
+                </span>
+            </div>
+        </div>
+    </div>
+</script>

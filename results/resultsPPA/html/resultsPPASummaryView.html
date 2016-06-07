@@ -1,0 +1,209 @@
+<div style="padding:16px;">
+	<table id="headerSummaryTable">
+		<tr>
+			<th>
+				<span data-i18n="ppaPeriod">Period</span>
+				<i class="fa fa-arrow-circle-down"></i>
+			</th>
+			<th style="width:110px">
+				<span data-i18n="ppaAsOfPeriod">As of Period</span>
+				<i class="fa fa-arrow-circle-right"></i>
+			</th>
+		</tr>
+	</table>
+
+	<div id="contentSummaryTable">
+		<!-- SUMMARY TABLE -->
+		<table>
+			<tr>
+				<td>
+					<!-- SUMMARY PERIOD LABELS -->
+					<table class="periodLabelColumn" style="margin-right: 1px;">
+
+						<!-- THE PERIOD LABEL GOES HERE WITH periodID -->
+						<% _.each(periodData, function(i, index) { %>
+							<% if(index == periodToIndex) { counter=1%>
+								<tr class="firstRow">
+									<td>&nbsp</td>
+								</tr>
+								<tr>
+									<td data-periodid="<%= i.id %>" title="<%= i.name %>">
+										<%= (i.name.length > 19) ? i.name.substr(0,18)+'&hellip;' : i.name %>
+									</td>
+								</tr>
+							<% } if(index > periodToIndex && index < periodToIndex+23) { counter++; %>
+								<tr>
+									<td data-periodid="<%= i.id %>" title="<%= i.name %>">
+										<%= (i.name.length > 19) ? i.name.substr(0,18)+'&hellip;' : i.name %>
+									</td>
+								</tr>
+							<% } %>
+						<% }); %>
+					</table>
+				</td>
+				<td>
+					<div class="summaryAsOfContainer" style="width: 936px;overflow-x: auto;">
+						<table class="asofPeriodLabelRows">
+							
+							<!-- THE FIRSTROW NEEDS TO LIST OF THE RANGE OF ASOF PERIODS SELECTED -->
+							
+								<% _.each(periodData, function(i, outerIndex) { %>
+										<% if(outerIndex === 0) { whiteBGCounter=0%>
+											<tr class="firstRow">
+												<% if(outerIndex === 0) { %>
+													<td data-periodid="<%= i.id %>">
+														Latest
+													</td>
+												<% } %>
+												<% _.each(periodData, function(j, indexInner) { %>
+													<% if(indexInner >= periodToIndex && indexInner < (periodToIndex + periodOffset)) { %>
+														<td data-periodid="<%= i.id %>" data-asofperiodid="<%= j.id %>" title="<%= j.name %>">
+															<%= (j.name.length > 19) ? j.name.substr(0,18)+'&hellip;' : j.name %>
+														</td>
+													<% } %>
+												<% }); %>
+											</tr>
+										<% } %>	
+
+											<% if(outerIndex>=periodToIndex && outerIndex < counter+periodToIndex) { whiteBGCounter++; startWhite=0%>
+												<tr>
+												<% _.each(periodData, function(j, indexInner) { %>
+													
+														<% if(indexInner === 0) { %>
+															<td data-periodid="<%= i.id %>" class="latest">
+																	<% _.each(periodResultWSOMap, function(renderItem) { %>
+																		<%_.each(renderItem, function(item) { %>
+
+																			<% if(i.id == item.periodId && item.isLatest) { %>
+																				
+																					<span title="<%= item.asOfPeriodAmountStr %>">
+																					<%= (item.asOfPeriodAmountStr.length > 13) ? item.asOfPeriodAmountStr.substr(0,13)+'&hellip;' : item.asOfPeriodAmountStr %>
+																					</span>
+																				
+																			<% } %>
+																		<% }); %>
+																		
+																	<% }); %>
+															</td>
+														<% }  %>
+
+															<% if(indexInner >= periodToIndex && indexInner < (periodToIndex + periodOffset)) { startWhite++  %>
+															
+															<% if(whiteBGCounter-startWhite>=0 && whiteBGCounter-startWhite<=11) { %>
+																<td class="whiteBG" data-periodid="<%= i.id %>" data-asofperiodid="<%= j.id %>">
+															
+																
+															<% } else { %>
+																<td data-periodid="<%= i.id %>" data-asofperiodid="<%= j.id %>">
+															<% } %>
+																
+																	<% _.each(periodResultWSOMap, function(renderItem) { %>
+																		<%_.each(renderItem, function(item) { %>
+
+																			<% if(i.id == item.periodId) { %>
+																				<% if(j.id == item.asOfPeriodId) { %>
+																					<span title="<%= item.asOfPeriodAmountStr %>" 
+																					data-periodstr="<%= item.periodStr %>" data-asofperiodstr="<%= item.asOfPeriodStr %>" data-originalamt="<%= item.originalAmountStr %>" data-changeamt="<%= item.changeAmount %>" 
+																					data-changeamtstr="<%= item.changeAmountStr %>">
+																					<%= (item.asOfPeriodAmountStr.length > 13) ? item.asOfPeriodAmountStr.substr(0,13)+'&hellip;' : item.asOfPeriodAmountStr %>
+																					</span>
+																					<% if(item.changeAmount > 0){ %>
+																					<i class="fa fa-arrow-circle-up arrowCells arrowCellsUp"></i>
+																					<% } if(item.changeAmount < 0){ %>
+																					<i class="fa fa-arrow-circle-down arrowCells arrowCellsDown"></i>
+																					<% } if(item.changeAmount === 0) { %> 
+																					<i class="fa fa-circle-thin arrowCells"></i>
+																					<% } %>
+																					
+																				<% } %>
+																			<% } %>
+																		<% }); %>
+																	
+																	<% }); %>
+																	<span data-coordinates="<%=startWhite%>//<%=whiteBGCounter%>">&nbsp</span>
+																</td>
+															<% } %>
+														
+												<% }); %>
+												</tr>
+											<% } %>
+										
+								<% }); %>
+							
+						</table>
+					</div>
+				</td>
+				<tr>
+		<table>
+	<div>
+
+</div>
+
+<style>
+
+	#headerSummaryTable th {
+		font-weight: bold;
+		width: 120px;
+		text-align: left;
+		font-size: 13px;
+	}
+
+	.firstRow td {
+		border: none !important;
+		background-color: #fff !important;
+	}
+
+	.periodLabelColumn td,
+	.asofPeriodLabelRows td {
+		min-width: 122px;
+		border: 1px solid #ccc;
+		border-bottom: 1px solid #ccc;
+		border-left: 0px;
+		padding: 8px 4px;
+		font-size: 11px;
+	}
+
+	.asofPeriodLabelRows td {
+		text-align: center;
+		background-color: #DDD;
+	}
+
+	td.dataRow {
+		background-color: #fff;
+	}
+
+	td.latest {
+    	background-color: #eef3f6;
+    	color: #346F8F; 
+    	font-weight: bold;
+	}
+	.whiteBG{
+		background-color: #FFF !important;
+	}
+	#resultsPPA-view.page-container{
+		min-width: 1360px;
+	}
+
+	.arrowCells{
+		float: right;
+    	margin-top: 2px;
+	}
+	.arrowCellsUp{
+		color:green;
+	}
+	.arrowCellsDown{
+		color:#346F8F;
+	}
+	.popover.top .arrow:after {
+        border-top-color: #5c7f92;
+    }
+    .popover {
+      font-size: 12px;
+      max-width: 400px;
+    }
+
+	.popover-title {
+	    font-size: 13px;
+	}
+	
+</style>

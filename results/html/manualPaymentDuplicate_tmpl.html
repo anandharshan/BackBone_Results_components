@@ -1,0 +1,58 @@
+<div id="popup-search-container" class="page-container duplicates_page">
+  <div class="page-title-box">
+    <div class="page-title" id="page-header"><%=title%></div>
+  </div>
+
+  <div id="inner-content">
+    <!-- table/grid/list -->
+    <div id="list" class="list-pane">
+      <div id='results-table' class='clearfix'>
+        <div class="search-breadcrumb_container clearfix hide">
+            <ul class="search-breadcrumb"></ul>
+            <!-- -->
+        </div>
+
+        <div class="list-header">
+          <div id="list-total">
+            <span id="results-total" class="results-total"></span>
+          </div>
+          <div class="list-nav list-nav-top"></div>
+        </div>
+
+        <div class="scroll-block">
+          <div class="scrollbar-holder">
+            <div class="scrollbar"></div>
+          </div>
+
+          <div class="scrollable-content">
+            <div class="list-wrapper results-list-wrapper result-container">
+              <div class='table-header clearfix'></div> 
+              <ul class='table-content clearfix'></ul>
+            </div>
+          </div>
+
+          <div class="scrollbar-holder bottom">
+            <div class="scrollbar"></div>
+          </div>
+        </div> <!-- scroll-block -->
+
+        <div class="list-nav list-nav-bottom clearfix"></div>
+      </div><!-- results-table-->
+      <div class="rightHelpMenuBtm">
+          <span id='downloadBtn' class='x-button x-button-enabled'>
+              <span><%= downloadBtnLabel %></span>
+          </span>
+          <span id='discardBtn' class='x-button x-button-enabled'>
+            <span><%= discardBtnLabel %></span>
+          </span>
+          <span id='acceptSelected' class='done-button x-button'>
+            <span><%= acceptSelectedBtnLabel %></span>
+          </span>
+          <span id='acceptAll' class='x-button x-button-enabled'>
+            <span><%= acceptAllBtnLabel %></span>
+          </span>
+      </div>      
+    </div>
+  </div> <!-- inner-content -->
+
+</div> <!-- end results-container -->

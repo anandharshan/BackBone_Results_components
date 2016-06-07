@@ -1,0 +1,1568 @@
+<!DOCTYPE html>
+<!--[if IE 8 ]>    <html class="ie ie8"> <![endif]-->
+<!--[if IE 9 ]>    <html class="ie ie9"> <![endif]-->
+<!--[if IE 10 ]>    <html class="ie ie10"> <![endif]-->
+<!--[if (gt IE 10)|!(IE)]><!--> <html class=""> <!--<![endif]-->
+<head>
+  <meta charset="UTF-8">
+  <title>Results</title>
+  <link rel="stylesheet" type="text/css" href="../../lib/bootstrap/css/bootstrap-combined.no-icons.min.css" >
+  <link rel="stylesheet" type="text/css" href="../../common/css/common-incent.css">
+  <link rel="stylesheet" type="text/css" href="../../results/css/results.css">
+  <link rel="stylesheet" type="text/css" href="../../lib/bootstrap_tour/css/bootstrap-tour.css">
+  <link rel="stylesheet" href="../../lib/jquery-ui/themes/smoothness/jquery-ui.min.css">
+</head>
+<body>
+
+  <div id="notficatioContent">
+   <div id="uiActionMsg">
+     <div id="uiActionMsgContent"></div>
+   </div>
+  </div>
+
+  <div id="content" class="content">
+     <div id='_loader_' class='k-loading-image'></div>
+  </div> <!-- end content -->
+
+<!-- page structure template -->
+<script type='text/template' id='credit-comm-bonus-tmpl'>
+    <div id="results-container" class="page-container">
+      <div class="page-title-box">
+        <div class="page-title" id="page-header"></div>
+        <ul class="tertiary-nav" id='tertiary-nav'>
+        </ul>
+        <div class="rightHelpMenu ">
+            <div class="helpMenuItem searchOptionsBtn" >
+                <span class="link-button searchOptions-button">
+                    <i class="fa fa-cog"></i> 
+                </span>
+            </div>
+            <div class="helpMenuItem hide">
+                <span class="link-button startTour-button">
+                  <i class="fa fa-question-circle"></i> 
+                </span>
+            </div>
+        </div>
+      </div>
+
+      <div id="inner-content">
+        <!-- Search/filter -->
+        <div class="sidebar"></div>
+        <!-- table/grid/list -->
+        <div id="list" class="list-pane">
+          <div id='releaseCount' class='clearfix'> </div>
+          <div class="search-section">
+            
+          </div>
+          <div id='results-table' class='hide'>
+            <div class="search-breadcrumb_container clearfix">
+                <div class='searchNameTitle searchText' data-i18n='searchNameLabel'>Search Name</div>
+                <div class='searchText' id='searchName'></div>
+                <div class='crums'>
+                  <ul class="search-breadcrumb"><li></li></ul>
+                </div>
+                <!-- -->
+            </div>
+
+            <div class="list-header">
+              <div id="list-total">
+                <span id="results-total" class="results-total"></span>
+              </div>
+              <div class="list-nav list-nav-top"></div>
+            </div>
+
+            <div class="scroll-block">
+              <div class="scrollbar-holder">
+                <div class="scrollbar"></div>
+              </div>
+
+              <div class="scrollable-content">
+                <div class="list-wrapper results-list-wrapper result-container">
+                  <div class='table-header clearfix'></div> 
+                  <ul class='table-content clearfix'></ul>
+                </div>
+              </div>
+
+              <div class="scrollbar-holder bottom">
+                <div class="scrollbar"></div>
+              </div>
+            </div> <!-- scroll-block -->
+
+            <div class="data-refresh hard-hide">
+              <span class="data-refresh-label"></span>
+              <span class="data-refresh-time"></span>
+            </div>
+            <div class="list-nav list-nav-bottom"></div>
+          </div><!-- results-table-->
+
+          <div class="saved-search-container"></div>
+        </div>
+      </div> <!-- inner-content -->
+    </div> <!-- end results-container -->
+</script>
+
+<!-- side bar template -->
+<script type='text/template' id='relased-landing-tmpl'>
+  <div class='sidebar-item'>
+    <div id='periodFilter' class="period-container clearfix" ></div>
+    <button class="primary-button enabled search-button">
+      <i class="fa fa-circle search-button-icon overlap">
+        <i class="fa fa-search search-button-icon"></i>
+      </i>
+      <span><%=primaryLabel%></span>
+    </button>
+
+    <button class="secondary-button download-button enabled">
+      <i class="fa fa-search fa-download"></i>
+      <span><%=secondaryLabel%></span>
+    </button>
+  </div>
+</script>
+
+<!-- side bar template -->
+<script type='text/template' id='held-landing-tmpl'>
+  <div class='sidebar-item'>
+    <div id='periodFilter' class="period-container clearfix" ></div>
+    <button class="primary-button enabled search-button">
+      <i class="fa fa-circle search-button-icon overlap">
+        <i class="fa fa-search search-button-icon"></i>
+      </i>
+      <span><%=primaryLabel%></span>
+    </button>
+  </div>
+</script>
+
+<!-- balance landing side bar template -->
+<script type='text/template' id='balance-landing-tmpl'>
+  <div class='sidebar-item'>
+    <div class="asOfperiod-container clearfix hide" ></div>
+    <button class="primary-button enabled search-button">
+      <i class="fa fa-circle search-button-icon overlap">
+        <i class="fa fa-search search-button-icon"></i>
+      </i>
+      <span><%=primaryLabel%></span>
+    </button>
+  </div>
+</script>
+
+<!-- side bar template -->
+<script type='text/template' id='relased-result-tmpl'>
+  <div class='sidebar-item-container'>
+    <div class='sidebar-item'>
+      <div id='periodFilter' class="period-container clearfix" ></div>
+      <div class="asOfperiod-container clearfix hide" ></div>
+      <button class="primary-button enabled download-button">
+        <i class="fa fa-circle search-button-icon overlap">
+          <i class="fa fa-download search-button-icon"></i>
+        </i>
+        <span><%=primaryLabel%></span>
+      </button>
+
+      <button class="secondary-button save-search enabled">
+        <i class="fa fa-search fa-floppy-o"></i>
+        <span data-i18n='saveSearch'>Save Search</span>
+      </button>
+    </div>
+    <div class="filter-box clearfix">
+      <div class='sidebar-item clearfix'>
+        <div class="filter-text" data-i18n="filters">Filters</div>
+        <div class='search-sidebar'>
+          <i class='fa fa-search'></i>
+          <span data-i18n='search'>Search</span>
+        </div>
+      </div>
+      <div class="sidebar-item sidebar-inputs clearfix"> </div>
+      <div class='sidebar-item clearfix'>
+        <div class='search-sidebar'>
+          <i class='fa fa-search'></i>
+          <span data-i18n='search'>Search</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</script>
+
+<script type='text/template' id='held-result-tmpl'>
+  <div class='sidebar-item-container'>
+    <div class='sidebar-item'>
+      <div id='periodFilter' class="period-container move20Top clearfix" ></div>
+      
+      <div class="primary-button release-holds no-ppa">
+        <i class="fa fa-circle search-button-icon overlap">
+          <i class="fa fa-level-up"></i>
+        </i>
+        <span data-i18n='releaseHolds'>Release Holds</span>
+        <div class="menu-popup-container arrow-box-container" >
+            <div class="arrow-box">
+                <ul>
+                    <% if (!(pageName === 'credits')) { %>
+                      <li><span class='release-all-in-search' data-i18n="allHoldsInPrimarySearch">Holds in Primary Search</span></li>
+                    <% }  %>
+                    <li><span class='release-by-selected disabled' data-i18n="selectedHolds" disabled>Selected Holds</span></li>
+                    <% if (!(pageName === 'bonuses' || pageName === 'credits')) { %>
+                      <li><span class='release-by-template' data-i18n="selectedHoldsByTemplate">By Release Template-</span></li>
+                    <% }  %>
+                </ul>
+            </div>
+        </div>
+      </div>
+
+      <button class="primary-button download-button enabled" enabled>
+        <i class="fa fa-circle search-button-icon overlap">
+          <i class="fa fa-download"></i>
+        </i>
+        <span data-i18n='download'>Download</span>
+      </button>
+
+      <button class="secondary-button download-button enabled">
+        <i class="fa fa-download"></i>
+        <span data-i18n='download'>Download</span>
+      </button>
+
+      <div class="secondary-button generate-template no-ppa" disabled>
+        <i class="fa fa-file-text-o"></i>
+        <span data-i18n='generateTemplate'>Generate Template</span>
+        <div class="menu-popup-container arrow-box-container" >
+            <div class="arrow-box">
+                <ul>
+                    <li><span class='generate-template-all' data-i18n="allHoldsInSearch">All holds in Search</span></li>
+                    <li><span class='generate-template-selected disabled'data-i18n="selectedHolds" disabled>Selected Holds</span></li>
+                </ul>
+            </div>
+        </div>
+      </div>
+
+      <button class="secondary-button add-comment disabled no-ppa" disabled>
+        <i class="fa fa-comment-o"></i>
+        <span data-i18n='addComment'>Add Comment</span>
+      </button>
+
+      <button class="secondary-button save-search enabled">
+        <i class="fa  fa-floppy-o"></i>
+        <span data-i18n='saveSearch'>Save Search</span>
+      </button>
+
+    </div>
+
+    <div class="filter-box clearfix">
+      <div class='sidebar-item clearfix'>
+        <div class="filter-text" data-i18n="filters">Filters</div>
+        <div class='search-sidebar'>
+          <i class='fa fa-search'></i>
+          <span data-i18n='search'>Search</span>
+        </div>
+      </div>
+      <div class="sidebar-item sidebar-inputs clearfix"> </div>
+      <div class='sidebar-item clearfix'>
+        <div class='search-sidebar'>
+          <i class='fa fa-search'></i>
+          <span data-i18n='search'>Search</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</script>
+
+<!-- modal downlaod -->
+<script type='text/template' id='downloadAndTemplateDownload-tmpl'>
+  <div class='wrapper'>
+    <div data-i18n='downloadHelp'>
+      You can check the status of your download by clicking the Downloads icon at the top of the screen.
+    </div>
+    <div>
+      <div id='downloadNameInput' class='input-element'></div>
+      <div id="downloadFormat" class="input-element">
+        <div class=" clearfix">                 
+          <div>                    
+            <label class="input-label" data-i18n='downloadFormatLabel'>Download Format:</label>
+            <div class="items"> 
+              <div class='downloadFormats' data-i18n='downloadFormats'>Which file format would you like to use?</div>                        
+              <div>
+                <input type='radio' name='format' id='csv' value='csv' checked>
+                <label for='csv' data-i18n='csv'>CSV</label>
+              </div>
+              <div>
+                <input type='radio' name='format' id='txt' value='txt'>
+                <label for='txt' data-i18n='txt'>TXT</label>
+              </div>
+            </div>                                    
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</script>
+
+<!-- modal comment -->
+<script type='text/template' id='add-view-comment-tmpl'>
+  <div class='wrapper'>
+    <div id='comments'></div>
+    <div class='add-comment'>
+      <div class='profile c<%=((index+1)%5) %>'><%=getProfile(resourceName)%></div>
+      <div class='comment-text'>
+        <div><textarea id='add-comment' maxlength="1024" placeholder='Write a comment...'></textarea></div>
+      </div>
+    </div>
+  </div>
+</script>
+
+<!-- modal comment -->
+<script type='text/template' id='comment-tmpl'>
+  <div class='comment clearfix'>
+    <div class='profile c<%=((index+1)%5) %>'><%=getProfile(comment.createdByName)%></div>
+    <div class='comment-text'>
+      <div>
+        <span class='name'><%=comment.createdByName%> : </span>
+        <span class='text'><%=comment.commentText%></span>
+      </div>
+      <div class='date'><%=comment.createdDate%></div>
+    </div>
+  </div>
+</script>
+
+<!-- modal release by template -->
+<script type='text/template' id='releaseByTemplate-tmpl'>
+  <form id="releaseByTemplateForm" method="POST" enctype="multipart/form-data">
+    <div class='wrapper label-up wide'>
+      <div class='input-row'>
+        <div class="input-element">
+          <div class=" clearfix">                 
+            <label class="input-label" data-i18n='releaseGroup'>Release Group</label>
+            <div class='input-content'>
+              <div data-i18n='releaseGroupHelp'>
+                Would you like to name the release group or should Incent select a name for you?
+              </div>
+              <div id="releaseGroupIdInput"></div>                     
+          </div>
+        </div>
+      </div>
+
+      <div class='input-row'>
+        <div class="input-element">
+          <div class=" clearfix">                 
+            <label class="input-label" data-i18n='releaseDateLabel'>Release Date</label>
+            <div class='input-content'>
+              <div data-i18n='releaseDateHelp'>For what date does the payment apply?</div>
+               <div id="releaseDateInput" class='clearfix'></div>
+            </div>                        
+          </div>
+        </div>
+      </div>
+
+      <div class='input-row'>
+        <div class="input-element">
+          <div class=" clearfix">                 
+            <label class="input-label" data-i18n='comment'>Comment</label>
+            <div class='input-content'>
+              <div data-i18n='commentHelp'>Type a comment that will be visible to administrators only.</div>
+              <textarea id='comment'> </textarea>
+            </div>                        
+          </div>
+        </div>  
+      </div>
+
+      <div class='input-row'>
+        <div class="input-element">
+          <div class=" clearfix">                 
+            <label class="input-label" data-i18n='uploadFile'>File</label>
+            <div class='input-content'>
+              <div data-i18n='uploadFileHelp'>Upload a file to release held.</div>
+              <div>
+                <div id="templateFileInput" class='clearfix'></div>
+              </div>
+              <div data-i18n='uploadFileCreationHelpCommissions'>
+                To create a template, select Generate Template from the actions on the held commissions page.
+              </div>
+            </div>                        
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</script>
+
+<!-- modal release by selected -->
+<script type='text/template' id='releaseBySelected-tmpl'>
+  <div class='wrapper label-up wide'>
+    <div class='input-row'>
+      <div class="input-element">
+        <div class=" clearfix">                 
+          <label class="input-label" data-i18n='releasePecentage'>Release Percentage</label>
+          <div class='input-content'>
+            <div data-i18n='releasePercentageHelp'>
+             What percentage of the original commission amount would you like to release?
+            </div>
+            <div class='clearfix' >
+              <div id='releasePercentInput'> </div>
+              <div class='percentageInputHelp' data-i18n='percentageInputHelp'>% of Original Commission</div>
+            </div>                     
+        </div>
+      </div>
+    </div>
+
+    <div class='input-row'>
+      <div class="input-element">
+        <div class=" clearfix">                 
+          <label class="input-label" data-i18n='releaseDateLabel'>Release Date</label>
+          <div class='input-content'>
+            <div data-i18n='releaseDateHelp'>For what date does the payment apply?</div>
+            <div id="releaseDateInput" class='clearfix'></div>
+          </div>                        
+        </div>
+      </div>
+    </div>
+
+     <div class='input-row'>
+      <div class="input-element">
+        <div class=" clearfix">                 
+          <label class="input-label" data-i18n='earningGroup'>Earning Group</label>
+          <div class='input-content'>
+            <div data-i18n='earningGroupHelp'>Would you like to change the earning group?</div>
+             <div id="earningGroupNameInput" class='clearfix'></div>
+          </div>                        
+        </div>
+      </div>
+    </div>
+
+    <div class='input-row'>
+      <div class="input-element">
+        <div class=" clearfix">                 
+          <label class="input-label" data-i18n='releaseGroup'>Release Group</label>
+          <div class='input-content'>
+            <div data-i18n='releaseGroupHelp'>
+              Would you like to name the release group or should Incent select a name for you?
+            </div>
+            <div id="releaseGroupIdInput"></div>                     
+        </div>
+      </div>
+    </div>
+
+    <div class='input-row'>
+      <div class="input-element">
+        <div class=" clearfix">                 
+          <label class="input-label" data-i18n='comment'>Comment</label>
+          <div class='input-content'>
+            <div data-i18n='commentHelp'>Type a comment that will be visible to administrators only.</div>
+            <textarea id='comment'> </textarea>
+          </div>                        
+        </div>
+      </div>  
+    </div>
+
+  </div>
+</script>
+
+<!-- modal release by selected for credits-->
+<script type='text/template' id='releaseBySelected-credit-tmpl'>
+  <div class='wrapper label-up wide'>
+
+    <div class='input-row'>
+      <div class="input-element">
+        <div class=" clearfix">                 
+          <label class="input-label" data-i18n='releaseDateLabel'>Release Date</label>
+          <div class='input-content'>
+            <div data-i18n='releaseDateHelpForCredit'>For what date would you like to calculate commissions and bonuses?</div>
+            <div id="releaseDateInput" class='clearfix'></div>
+          </div>                        
+        </div>
+      </div>
+    </div>
+
+    <div class='input-row'>
+      <div class="input-element">
+        <div class=" clearfix">                 
+          <label class="input-label" data-i18n='releaseGroup'>Release Group</label>
+          <div class='input-content'>
+            <div data-i18n='releaseGroupHelp'>
+              Would you like to name the release group or should Incent select a name for you?
+            </div>
+            <div id="releaseGroupIdInput"></div>                     
+        </div>
+      </div>
+    </div>
+
+    <div class='input-row'>
+      <div class="input-element">
+        <div class=" clearfix">                 
+          <label class="input-label" data-i18n='comment'>Comment</label>
+          <div class='input-content'>
+            <div data-i18n='commentHelp'>Type a comment that will be visible to administrators only.</div>
+            <textarea id='comment'> </textarea>
+          </div>                        
+        </div>
+      </div>  
+    </div>
+
+  </div>
+</script>
+
+<!-- modal release by selected for bonus -->
+<script type='text/template' id='releaseBySelected-bonus-tmpl'>
+  <div class='wrapper label-up wide'>
+
+    <div class='input-row'>
+      <div class="input-element">
+        <div class=" clearfix">                 
+          <label class="input-label" data-i18n='releaseDateLabel'>Release Date</label>
+          <div class='input-content'>
+            <div data-i18n='releaseDateHelp'>For what date does the payment apply?</div>
+            <div id="releaseDateInput" class='clearfix'></div>
+          </div>                        
+        </div>
+      </div>
+    </div>
+
+    <div class='input-row'>
+      <div class="input-element">
+        <div class=" clearfix">                 
+          <label class="input-label" data-i18n='releaseGroup'>Release Group</label>
+          <div class='input-content'>
+            <div data-i18n='releaseGroupHelp'>
+              Would you like to name the release group or should Incent select a name for you?
+            </div>
+            <div id="releaseGroupIdInput"></div>                     
+        </div>
+      </div>
+    </div>
+
+    <div class='input-row'>
+      <div class="input-element">
+        <div class=" clearfix">                 
+          <label class="input-label" data-i18n='comment'>Comment</label>
+          <div class='input-content'>
+            <div data-i18n='commentHelp'>Type a comment that will be visible to administrators only.</div>
+            <textarea id='comment'> </textarea>
+          </div>                        
+        </div>
+      </div>  
+    </div>
+
+  </div>
+</script>
+
+<!-- modal upload Manual payment-->
+<script type='text/template' id='uploadManualPayment-tmpl'>
+  <form id="uploadManualPaymentForm" method="POST" enctype="multipart/form-data">
+    <div class='wrapper label-up wide'>
+      
+        <div data-i18n="uploadpaymentsHeader">To upload payments, follow these steps:</div>
+        <div class="template-link">
+          <div>
+            <span class="number-circle">1</span>
+            <span class="link-button tag-manualpayment-template-link" data-i18n="clickHere">Click here</span>
+            <span data-i18n="toDownloadExcel">to download the CSV template file</span><br>
+          </div>
+          <div>
+            <span class="number-circle">2</span>
+            <span data-i18n="editpaymentContentInstructionsStep2">Edit the file to include the necessary payment information and save the file</span>
+          </div>
+          <div class="input-element custom_file_input">
+            <span class="number-circle">3</span>
+            <span data-i18n="editPaymentContentInstructionsStep3">Browse and select the template file for upload</span>
+            <div id="templateFileInput" class='clearfix'></div> 
+          </div>
+
+          <div class='input-row reasonCodeSection'>
+            <div class="input-element">
+              <div class='input-content'>
+                <div class="autoCreateReasonCode input-element">
+                  <input type="checkbox" id="autoCreateReasonCode"/>
+                  <span data-i18n="autoCreateReasonCode">Auto Create Reason Codes</span>
+                </div>
+              </div>                        
+            </div>  
+          </div>
+          <!--error section Starts-->
+          <div class='error_section hide'>
+            <div data-i18n="errorUploadingFile" class="errorUploadingFile">
+              Error Uploading File
+            </div>
+            <div class="otherErrorListingArea">
+              <!--Other validation area like 2000record validation and invlaid file-->
+
+            </div>
+            <div class = "ErrorListingSection">
+                <div class="header">
+                    <div data-i18n="row" class="rowHeader" >Row</div>
+                    <div data-i18n="message" class="messageHeader">Message</div>
+                    <div data-i18n="downloadErrorLog" class="downloadErrorLog">Download error log</div>
+                </div>
+                <ul class="errorListBody">
+                    
+                </ul>
+            </div>
+          </div>
+          <!--error section Ends-->
+      </div>  
+  </form>
+</script>
+
+<!-- modal payment download template -->
+<script type='text/template' id='paymentTemplateDownload-tmpl'>
+  <div class='wrapper label-up wide'>
+    <div data-i18n='downloadHelp'>
+      You can check the status of your download by clicking the Downloads icon at the top of the screen.
+    </div>
+      <div id='downloadNameInput' class='input-element'></div>
+
+    <div class='input-row'>
+      <div class="input-element">
+        <div class=" clearfix">                 
+          <label class="input-label" data-i18n='tmplDescription'>Description</label>
+          <div class='input-content'>
+            <textarea id='disabled_description' disabled> </textarea>
+          </div>                        
+        </div>
+      </div>  
+    </div>
+
+    <div class='input-row'>
+      <div class="input-element">
+        <div class=" clearfix">                 
+          <label class="input-label" data-i18n='payrollTemplate'>Payroll Template</label>
+          <div class='input-content'>
+            <div data-i18n='payrollTemplateHelp'>
+             Which payroll template whould you like to use?
+            </div>
+            <div id="payrollTemplateInput" class='clearfix'></div>
+          </div>                        
+        </div>
+      </div>
+    </div>
+
+     <div id="downloadFormat" class="input-element">
+        <div class=" clearfix">                 
+          <div>                    
+            <label class="input-label" data-i18n='downloadFormatLabel'>Download Format:</label>
+            <div class="items"> 
+              <div class='downloadFormats' data-i18n='downloadFormats'>Which file format would you like to use?</div>                        
+              <div>
+                <input type='radio' name='format' id='csv' value='csv' checked>
+                <label for='csv' data-i18n='csv'>CSV</label>
+              </div>
+              <div>
+                <input type='radio' name='format' id='txt' value='txt'>
+                <label for='txt' data-i18n='txt'>TXT</label>
+              </div>
+            </div>                                    
+          </div>
+        </div>
+      </div>
+
+  </div>
+</script>
+
+<!-- modal payment preview template -->
+<script type='text/template' id='preview-popup-tmpl'>
+  <div class='wrapper label-up wide'>
+  
+    <div class='input-row'>
+      <div class="input-element">
+        <div class=" clearfix">                 
+          <label class="input-label" data-i18n='period'>Period</label>
+          <div class='input-content'>
+            <div data-i18n='periodPreviewHelp'>Which period would you like to preview?</div>
+            <div id="periodInput" class='clearfix'></div>
+          </div>                        
+        </div>
+      </div>
+    </div>
+
+    <div class='input-row'>
+      <div class="input-element">
+        <div class=" clearfix">                 
+          <label class="input-label" data-i18n='businessGroups'>Business Groups</label>
+          <div class='input-content'>
+              <div class='downloadFormats' data-i18n='businessGroupHelpPreview'>Which business groups would you like to preview?</div>                        
+              <div class="items"> 
+                <div>
+                  <input type='radio' name='include' id='allBizGrp' value='all' >
+                  <label for='allBizGrp' data-i18n='includeAll'>Include All</label>
+                </div>
+                <div>
+                  <input type='radio' name='include' id='selectedBizGrp' value='specific' checked>
+                  <label for='selectedBizGrp' data-i18n='selectBizGrp'>Select Specific Business Group</label>
+                </div>
+              </div>
+              <div id="businessGroupInput" class='clearfix'></div>
+          </div>                        
+        </div>
+      </div>
+    </div>
+  </div>
+</script>
+
+<!-- modal payment finalize template -->
+<script type='text/template' id='finalize-popup-tmpl'>
+  <div class='wrapper label-up wide'>
+    <div class='input-row'>
+      <div class="input-element">
+        <div class=" clearfix">                 
+          <label class="input-label" data-i18n='period'>Period</label>
+          <div class='input-content'>
+            <div data-i18n='periodFinalizeHelp'>
+             Which period would you like to finalize?
+            </div>
+            <div id="periodInput" class='no-remove-icon clearfix'></div>
+          </div>                        
+        </div>
+      </div>
+    </div>
+
+    <div class='input-row'>
+      <div class="input-element">
+        <div class=" clearfix">                 
+          <label class="input-label" data-i18n='businessGroups'>Business Groups</label>
+          <div class='input-content'>
+              <div class='downloadFormats' data-i18n='businessGroupHelpFinalize'>Which business groups would you like to finalize?</div>                        
+              <div class="items"> 
+                <div>
+                  <input type='radio' name='include' id='allBizGrp' value='all' >
+                  <label for='allBizGrp' data-i18n='includeAll'>Include All</label>
+                </div>
+                <div>
+                  <input type='radio' name='include' id='selectedBizGrp' value='specific' checked>
+                  <label for='selectedBizGrp' data-i18n='selectBizGrp'>Select Specific Business Group</label>
+                </div>
+              </div>
+              <div id="businessGroupInput" class='clearfix'></div>
+          </div>                        
+        </div>
+      </div>
+    </div>
+  </div>
+</script>
+
+<!-- modal payment calculate balances template -->
+<script type='text/template' id='calcbalances-popup-tmpl'>
+  <div class='wrapper label-up wide'>
+    <div class='input-row'>
+      <div class="input-element">
+        <div class=" clearfix">                 
+          <label class="input-label" data-i18n='period'>Period</label>
+          <div class='input-content'>
+            <div data-i18n='periodCalcBalancesHelp'>
+             Which period would you like to calculate balances?
+            </div>
+            <div id="periodInput" class='no-remove-icon clearfix'></div>
+          </div>                        
+        </div>
+      </div>
+    </div>
+
+    <div class='input-row'>
+      <div class="input-element">
+        <div class=" clearfix">                 
+          <label class="input-label" data-i18n='businessGroups'>Business Groups</label>
+          <div class='input-content'>
+              <div class='downloadFormats' data-i18n='businessGroupHelpCalcBalances'>Which business groups would you like to calculate balances?</div>                        
+              <div class="items"> 
+                <div>
+                  <input type='radio' name='include' id='allBizGrp' value='all' >
+                  <label for='allBizGrp' data-i18n='includeAll'>Include All</label>
+                </div>
+                <div>
+                  <input type='radio' name='include' id='selectedBizGrp' value='specific' checked>
+                  <label for='selectedBizGrp' data-i18n='selectBizGrp'>Select Specific Business Group</label>
+                </div>
+              </div>
+              <div id="businessGroupInput" class='clearfix'></div>
+          </div>                        
+        </div>
+      </div>
+    </div>
+  </div>
+</script>
+
+
+<!-- modal payment release all template -->
+<script type='text/template' id='paymentRelaseAll-tmpl'>
+  <div class='wrapper'>
+    <div data-i18n='confirmReleaseHelp'>
+      Are you sure you want to release the payments? This process will be added to the Queue.
+    </div>
+  </div>
+</script>
+
+<script type='text/template' id='paymentRelaseByBizGrp-tmpl'>
+  <div class='wrapper label-up wide'>
+    <div data-i18n='confirmReleaseHelp'>
+      Are you sure you want to release the payments? This process will be added to the Queue.
+    </div>
+    <div class='input-row'>
+      <div class="input-element">
+        <div class=" clearfix">                 
+          <label class="input-label" data-i18n='businessGroups'>Business Groups</label>
+          <div class='input-content'>
+              <div class='downloadFormats' data-i18n='businessGroupPayReleaseHelp'>Which business groups would you like to release for payments?</div>                        
+              <div id="businessGroupInput" class='clearfix'></div>
+          </div>                        
+        </div>
+      </div>
+    </div>
+  </div>
+</script>
+
+<!-- payment landing sidebar Template -->
+<script type='text/template' id='payment-landing-tmpl'>
+  <div class='sidebar-item'>
+    <div id='periodFilter' class="period-container clearfix" ></div>
+    <div class="asOfperiod-container clearfix hide" ></div>
+    <button class="primary-button enabled search-button">
+      <i class="fa fa-circle search-button-icon overlap">
+        <i class="fa fa-search search-button-icon"></i>
+      </i>
+      <span><%=primaryLabel%></span>
+    </button>
+
+    <button class="secondary-button download-button enabled" enabled>
+      <i class="fa fa-download"></i>
+      <span data-i18n='download'>Download</span>
+    </button>
+
+    <button class="secondary-button calcbalances enabled no-ppa" >
+      <i class="fa fa-calculator"></i>
+      <span data-i18n='calcBalances'>Calculate Balances</span>
+    </button>
+
+    <button class="secondary-button finalize enabled no-ppa" >
+      <i class="fa fa-search fa-lock"></i>
+      <span data-i18n='finalize'>Finalize</span>
+    </button>
+
+    <div class="secondary-button release-payments enabled no-ppa" >
+      <span >
+        <i class="fa fa-external-link-square"></i>
+      </span>
+      <span data-i18n='paymentRelease'>Release Payments</span>
+      <div class="menu-popup-container arrow-box-container" >
+          <div class="arrow-box">
+              <ul>
+                  <li>
+                    <span class='release-payment-by-period' data-i18n="allPaymentsIn">All Payments in</span>
+                    <span id='paymentPeriod'></span>
+                  </li>
+                  <li>
+                    <span class='release-payment-by-bizgroups' data-i18n="byBusinessGroups">By Business Groups</span>
+                  </li>
+              </ul>
+          </div>
+      </div>
+    </div>
+  </div>
+</script>
+
+<!-- payment result sidebar Template -->
+<script type='text/template' id='payment-result-tmpl'>
+  <div class='sidebar-item-container'>
+    <div class='sidebar-item'>
+      <div id='periodFilter' class="period-container clearfix" ></div>
+      <div class="asOfperiod-container clearfix hide" ></div>
+      <button class="primary-button enabled download-button">
+        <i class="fa fa-circle search-button-icon overlap">
+          <i class="fa fa-download search-button-icon"></i>
+        </i>
+        <span><%=primaryLabel%></span>
+      </button>
+
+      <button class="secondary-button calcbalances enabled no-ppa" >
+        <i class="fa fa-calculator"></i>
+        <span data-i18n='calcBalances'>Calculate Balances</span>
+      </button>
+
+      <button class="secondary-button finalize no-ppa" disabled>
+        <i class="fa fa-search fa-lock"></i>
+        <span data-i18n='finalize'>Finalize</span>
+      </button>
+
+      <div class="secondary-button release-payments no-ppa" disabled>
+        <span>
+          <i class="fa fa-external-link-square"></i>
+        </span>
+        <span data-i18n='paymentRelease'>Release Payments</span>
+        <div class="menu-popup-container arrow-box-container" >
+            <div class="arrow-box">
+                <ul>
+                    <li>
+                      <span class='release-payment-by-period' data-i18n="allPaymentsIn">All Payments in</span>
+                      <span id='paymentPeriod'></span>
+                    </li>
+                    <li>
+                      <span class='release-payment-by-selected disabled' data-i18n="selectedPayments">Selected Payments</span>
+                    </li>
+                    <li>
+                      <span class='release-payment-by-bizgroups' data-i18n="byBusinessGroups">By Business Groups</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+      </div>
+      <button class="secondary-button save-search enabled">
+        <i class="fa fa-search fa-floppy-o"></i>
+        <span data-i18n='saveSearch'>Save Search</span>
+      </button>
+    </div>
+    <div class="filter-box clearfix">
+
+      <div class='sidebar-item clearfix'>
+        <div class="filter-text" data-i18n="filters">Filters</div>
+        <div class='search-sidebar'>
+          <i class='fa fa-search'></i>
+          <span data-i18n='search'>Search</span>
+        </div>
+      </div>
+
+      <div class='sidebar-item clearfix'>
+        <div class='type-radio'>
+          <input type='radio' name='paymentType' value='all' id='allTypes' checked>
+          <label for='allTypes' data-i18n='allTypes'>All Types</label>
+        </div>
+        <div class='type-radio'>
+          <div>
+            <input type='radio' name='paymentType' value='selected' id='selectedType'>
+            <label for='selectedType' data-i18n='selectedTypes'>Selected Types</label>
+          </div>
+          <div class='subtypes'>
+            <div class='disable-over'> </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sidebar-item sidebar-inputs clearfix"> </div>
+      <div class='sidebar-item clearfix'>
+        <div class='search-sidebar'>
+          <i class='fa fa-search'></i>
+          <span data-i18n='search'>Search</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</script>
+
+
+<!-- payment balances result sidebar Template -->
+<script type='text/template' id='payment-balances-result-tmpl'>
+  <div class='sidebar-item-container'>
+    <div class='sidebar-item'>
+      <div id='periodFilter' class="period-container clearfix" ></div>
+      <div class="asOfperiod-container clearfix hide" ></div>
+
+      <button class="primary-button enabled download-button">
+        <i class="fa fa-circle search-button-icon overlap">
+          <i class="fa fa-download search-button-icon"></i>
+        </i>
+        <span><%=primaryLabel%></span>
+      </button>
+
+      <button class="secondary-button save-search enabled">
+        <i class="fa fa-search fa-floppy-o"></i>
+        <span data-i18n='saveSearch'>Save Search</span>
+      </button>
+    </div>
+    <div class="filter-box clearfix">
+        <div class='sidebar-item clearfix'>
+          <div class="filter-text" data-i18n="filters">Filters</div>
+          <div class='search-sidebar'>
+            <i class='fa fa-search'></i>
+            <span data-i18n='search'>Search</span>
+          </div>
+        </div>
+        <div class='sidebar-item clearfix options-types'>
+          <div class='type-radio'>
+            <input type='radio' name='paymentType' value='all' id='allTypes' checked>
+            <label for='allTypes' data-i18n='allTypes'>All Types</label>
+          </div>
+          <div class='type-radio'>
+            <div>
+              <input type='radio' name='paymentType' value='selected' id='selectedType'>
+              <label for='selectedType' data-i18n='selectedTypes'>Selected Types</label>
+            </div>
+            <div class='subtypes'>
+              <div class='disable-over'> </div>
+            </div>
+          </div>
+        </div>
+        <div class="sidebar-item sidebar-inputs clearfix"> </div>
+        <div class='sidebar-item clearfix'>
+          <div class='search-sidebar'>
+            <i class='fa fa-search'></i>
+            <span data-i18n='search'>Search</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</script>
+
+
+<!-- manual payment landing side bar template -->
+<script type='text/template' id='mp-landing-tmpl'>
+  <div class='sidebar-item'>
+    <div id='periodFilter' class="period-container clearfix" ></div>
+    <button class="primary-button enabled search-button">
+      <i class="fa fa-circle search-button-icon overlap">
+        <i class="fa fa-search search-button-icon"></i>
+      </i>
+      <span><%=primaryLabel%></span>
+    </button>
+
+    <button class="secondary-button enabled upload-button">
+      <i class="fa fa-upload search-button-icon"></i>
+      <span data-i18n='upload' class="upload_txt">Upload</span>
+    </button>
+
+    <button class="secondary-button add-manual-payment enabled">
+      <i class="fa fa-plus-square"></i>
+      <span data-i18n='addManualPayment'>Add Manual Payment</span>
+    </button>
+
+    <button class="secondary-button download-button enabled">
+      <i class="fa fa-search fa-download"></i>
+      <span><%=secondaryLabel%></span>
+    </button>
+  </div>
+</script>
+
+<!--Manual Payment results Sidebar-->
+<script type='text/template' id='manual-payment-result-tmpl'>
+  <div class='sidebar-item-container'>
+    <div class='sidebar-item'>
+      <div id='periodFilter' class="period-container clearfix" ></div>
+      <div class="asOfperiod-container clearfix hide" ></div>
+
+      <button class="primary-button enabled upload-button">
+        <i class="fa fa-circle search-button-icon overlap">
+          <i class="fa fa-upload search-button-icon"></i>
+        </i>
+        <span data-i18n='upload' class="upload_txt">Upload</span>
+      </button>
+
+      <button class="secondary-button add-manual-payment enabled">
+        <i class="fa fa-plus-square"></i>
+        <span data-i18n='addManualPayment'>Add Manual Payment</span>
+      </button>
+
+      <button class="primary-button download-button enabled" enabled>
+        <i class="fa fa-circle search-button-icon overlap">
+          <i class="fa fa-download"></i>
+        </i>
+        <span data-i18n='download'>Download</span>
+      </button>
+
+      <button class="secondary-button download-button enabled">
+        <i class="fa fa-download"></i>
+        <span data-i18n='download'>Download</span>
+      </button>
+
+      <button class="secondary-button delete-payment disabled" disabled>
+        <i class="fa fa-trash"></i>
+        <span data-i18n='delete'>Delete</span>
+      </button>
+
+      <button class="secondary-button add-comment disabled" disabled>
+        <i class="fa fa-comment-o"></i>
+        <span data-i18n='addComment'>Add Comment</span>
+      </button>
+
+      <button class="secondary-button save-search enabled">
+        <i class="fa fa-search fa-floppy-o"></i>
+        <span data-i18n='saveSearch'>Save Search</span>
+      </button>
+    </div>
+
+    <div class="filter-box clearfix">
+      <div class='sidebar-item clearfix'>
+        <div class="filter-text" data-i18n="filters">Filters</div>
+        <div class='search-sidebar'>
+          <i class='fa fa-search'></i>
+          <span data-i18n='search'>Search</span>
+        </div>
+      </div>
+      <div class="sidebar-item sidebar-inputs clearfix"> </div>
+      <div class='sidebar-item clearfix'>
+        <div class='search-sidebar'>
+          <i class='fa fa-search'></i>
+          <span data-i18n='search'>Search</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</script>
+
+<!--Manual Payment results Sidebar-->
+<script type='text/template' id='addManualPayment-tmpl'>
+
+  <form id='addManualPaymentForm' method='POST' enctype='multipart/form-data'>
+    <div class='wrapper label-up wide'>
+      
+      <div class='input-row'>
+        <div class='input-element'>
+          <div class='clearfix'>
+            <label class='input-label' data-i18n='PersonLbl'>Person:</label>
+            <div class='input-content'>
+              <div data-i18n='personSelect'>
+                Select the person you would like to add the payment adjustment for.
+              </div>
+              <div id='participantNameInput'></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class='input-row'>
+        <div class='input-element'>
+          <div class='clearfix'>
+            <label class='input-label' data-i18n='amountLbl'>Amount:</label>
+            <div class='input-content'>
+              <div data-i18n='amountpaymentadjustment'>
+                Enter the amount of the payment adjustment.
+              </div>
+              <div id='amountWithUnitTypeInput'></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class='input-row'>
+        <div class='input-element'>
+          <div class='clearfix'>
+            <label class='input-label' data-i18n='incentiveDateLbl'>Incentive Date:</label>
+            <div class='input-content'>
+              <div data-i18n='enterIncentiveDate'>
+                Enter the Incentive date of the payment adjustment.
+              </div>
+              <div id='incentiveDateInput'></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class='input-row'>
+        <div class='input-element'>
+          <div class='clearfix'>
+            <label class='input-label' data-i18n='earningGrpLbl'>Earning Group:</label>
+            <label class="input-label-optional" data-i18n="optionalTag">optional</label>
+            <div class='input-content'>
+              <div data-i18n='associateEarningGroup'>
+                Associate this payment adjustment to an Earning Group.
+              </div>
+              <div id='earningGroupNameInput'></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--div class='input-row'>
+        <div class='input-element'>
+          <div class='clearfix'>
+            <label class='input-label' data-i18n='orderCodeLbl'>Order Code:</label>
+            <label class="input-label-optional" data-i18n="optionalTag">optional</label>
+            <div class='input-content'>
+              <div data-i18n='associateOrderCode'>
+                Associate this payment adjustment to an Order Code.
+              </div>
+              <div id='orderCodeInput'></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class='input-row'>
+        <div class='input-element'>
+          <div class='clearfix'>
+            <label class='input-label' data-i18n='itemcodeLbl'>Item Code:</label>
+            <label class="input-label-optional" data-i18n="optionalTag">optional</label>
+            <div class='input-content'>
+              <div data-i18n='associateItemCode'>
+                Associate this payment adjustment to an Item Code.
+              </div>
+              <div id='orderItemCodeInput'></div>
+            </div>
+          </div>
+        </div>
+      </div-->
+
+      <div class='input-row'>
+        <div class='input-element'>
+          <div class='clearfix'>
+            <label class='input-label' data-i18n='reasonCodeLbl'>Reason Code:</label>
+            <label class="input-label-optional" data-i18n="optionalTag">optional</label>
+            <div class='input-content'>
+              <div data-i18n='reasoncodeDesc'>
+                Assign a Reason Code to this payment adjustment.
+              </div>
+              <div id='reasonCodeNameInput'></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class='input-row'>
+        <div class='input-element'>
+          <div class='clearfix'>
+            <label class='input-label' data-i18n='CommentLbl'>Comment:</label>
+            <label class="input-label-optional" data-i18n="optionalTag">optional</label>
+            <div class='input-content'>
+              <div data-i18n='commentDesc'>
+                Enter a description that will be visible to the user.
+              </div>
+              <textarea id='comment' maxlength="256"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </form>
+</script>
+
+<!-- row template for released table -->
+<script type='text/template' id='released-header-template'>
+  <div class="list-item-header list-item-row border-bottom">
+    <span class='action-cell'>
+    </span>
+    <%
+      var sortFieldName, sortClass;
+      headers.forEach(function(header){
+          sortFieldName = header.sortFieldName || header.name;
+          sortClass = '';
+          if(header.sortable === true){
+            sortClass =  'sortable';
+          }
+          sortClass = header.sort || sortClass; 
+          %>
+          <span data-field-name='<%=sortFieldName%>' class='<%=header.className%>'><span class='sortImg <%=sortClass%>'><%=header.label%></span></span>
+          <%
+      });             
+    %>
+  </div>
+</script>
+
+<!-- row template for draws table -->
+<script type='text/template' id='header-template-withoutActionCell'>
+  <div class="list-item-header list-item-row border-bottom">
+    <%
+      var sortFieldName, sortClass;
+      headers.forEach(function(header){
+          sortFieldName = header.sortFieldName || header.name;
+          sortClass = '';
+          if(header.sortable === true){
+            sortClass =  'sortable';
+          }
+          sortClass = header.sort || sortClass; 
+          %>
+          <span data-field-name='<%=sortFieldName%>' class='<%=header.className%>'><span class='sortImg <%=sortClass%>'><%=header.label%></span></span>
+          <%
+      });             
+    %>
+  </div>
+</script>
+
+<!-- row template for held table -->
+<script type='text/template' id='held-header-template'>
+  <div class="list-item-header list-item-row border-bottom">
+    <span class='action-cell'>
+      <i class='fa all-select-control fa-square-o'></i>
+    </span>
+    <%
+      var sortFieldName, sortClass;
+      headers.forEach(function(header){
+          sortFieldName = header.sortFieldName || header.name;
+          sortClass = '';
+          if(header.sortable === true){
+            sortClass =  'sortable';
+          }
+          sortClass = header.sort || sortClass; 
+          %>
+          <span data-field-name='<%=sortFieldName%>' class='<%=header.className%>'><span class='sortImg <%=sortClass%>'><%=header.label%></span></span>
+          <%
+      });             
+    %>
+  </div>
+</script>
+
+
+<!-- row template for released table -->
+<script type='text/template' id='released-row-template'>
+  <li class="list-item-row row" data-id="<%=data.id%>" >
+    <div class='res-row clearfix'>
+      <%
+      var show = '';
+      if(!data.commentCount || data.commentCount == 0){
+        show = 'display:none;';
+      }
+      %>
+      <span class='action-cell' >
+        <i class='fa comment-added row-comment' style='<%=show%>'></i>
+      </span>
+      <%
+      headers.forEach(function(header){
+          %>
+          <span class='<%=header.className%>' data-field-name='<%= header.name %>'><%=data[header.name]%></span>
+          <%
+      });             
+      %>
+    </div>
+    <div class='res-row-details' style='display:none;'></div> 
+  </li>
+</script>
+
+<!-- Duplicate row template for upload manual payment -->
+<script type='text/template' id='duplicates-row-template'>
+  <li class="list-item-row row" data-id="<%=data.id%>" >
+    <div class='res-row clearfix'>
+      <span class='action-cell'>
+        <i class='fa row-not-selected select'></i>
+      </span>
+      <%
+        headers.forEach(function(header){
+      %>
+        <span class='<%=header.className%>' data-field-name='<%= header.name %>'><%=data[header.name]%></span>
+      <%
+      });             
+      %>
+    </div>
+    <div class='res-row-details' style='display:none;'></div> 
+  </li>
+</script>
+
+<!-- row template for duplicates table -->
+<script type='text/template' id='duplicates-header-template'>
+  <div class="list-item-header list-item-row border-bottom">
+    <span class='action-cell'>
+      <i class='fa all-select-control fa-square-o'></i>
+    </span>
+    <%
+      var sortFieldName, sortClass;
+      headers.forEach(function(header){
+          sortFieldName = header.sortFieldName || header.name;
+          sortClass = '';
+          if(header.sortable === true){
+            sortClass =  'sortable';
+          }
+          sortClass = header.sort || sortClass; 
+          %>
+          <span data-field-name='<%=sortFieldName%>' class='<%=header.className%>'><span class='sortImg <%=sortClass%>'><%=header.label%></span></span>
+          <%
+      });             
+    %>
+  </div>
+</script>
+
+<script type='text/template' id='detail-row-template'>  
+  <div class='section list-item-detail '>
+    <fieldset>
+      <div data-i18n='details' class='legend selected'>Details</div>
+    </fieldset>
+    <div class='expanded-container'>
+      <%
+      var titleMarginTopKlass = '';
+      config.forEach(function(section){
+      %>
+        <% if (section.title != "") { %>
+        <div class='section-title <%=titleMarginTopKlass%> clearfix' data-i18n='<%=section.title%>'><%=section.title%></div> 
+        <% } %> 
+          <%
+          section.rows.forEach(function(row){
+            %>
+            <div class='section-row clearfix'>
+              <%
+              row.forEach(function(col){            
+              %>
+                <div class='section-data'>
+                  <div class='section-label'data-i18n='<%=col%>'><%=col%></div>
+                  <div class='section-value'><%=data[col]%></div>
+                </div>
+              <%
+              });
+              %>
+            </div>
+            <%
+          });
+          titleMarginTopKlass = 'mr30';
+      });
+      %>
+    </div>   
+  </div>   
+</script>
+
+<script type='text/template' id='manualpayment-detail-row-template'>  
+  <div class='section list-item-detail expansion'>
+    <fieldset>
+      <div data-id='details' data-i18n='details' class='legend selected'>Details</div>
+      <div data-id='audit' data-i18n='audit' data-manualpaymentid='<%=data.id%>' class='legend '>Audit</div>
+    </fieldset>
+    <div class='expanded-container'>
+      <div id='details' class='expansion-section'>
+        <%
+        var titleMarginTopKlass = '';
+        config.forEach(function(section){
+        %>
+          <div class='section-title <%=titleMarginTopKlass%> clearfix' data-i18n='<%=section.title%>'><%=section.title%></div>  
+            <%
+            section.rows.forEach(function(row){
+              %>
+              <div class='section-row clearfix'>
+                <%
+                row.forEach(function(col){            
+                %>
+                  <div class='section-data'>
+                    <div class='section-label'data-i18n='<%=col%>'><%=col%></div>
+                    <div class='section-value'><%=data[col]%></div>
+                  </div>
+                <%
+                });
+                %>
+              </div>
+              <%
+            });
+            titleMarginTopKlass = 'mr30';
+        });
+        %>
+      </div>
+      <div id='audit' class='expansion-section horizontal-container hide' >
+        <table>
+          <thead>
+            <tr class='page-title-box'>
+              <th data-i18n='createdDate'>Created Date</th>
+              <th data-i18n='createdBy'>Created By</th>
+              <th data-i18n='comment'>Comment</th>
+              <th data-i18n='reasonCode'>Reason Code</th>
+              <th data-i18n='earningGroup'>Earning Group</th>
+            </tr>
+          </thead>
+          <tbody id='audit-<%=data.id%>'>  
+          </tbody>
+      </div>
+    </div>   
+  </div>   
+</script>
+
+<script type='text/template' id='manualpayment-audit-row-template'>
+   <tr>
+    <td> <%=createdDate%> </td>
+    <td> <%=createdByName%> </td>
+    <td> <span class='audit-comment'><%=comment%> </span></td>
+    <td> <%=reasonCodeName%> </td>
+    <td> <%=earningGroupName%> </td>
+  </tr>
+</script>
+
+<!-- row template for held table -->
+<script type='text/template' id='held-row-template'>
+  <li class="list-item-row row" data-id="<%=data.id%>" >
+    <div class='res-row clearfix'>
+      <%
+      var commentClass = 'no-comments';
+      if(data.commentCount > 0){
+        commentClass = 'comment-added';
+      }
+      %>
+      <span class='action-cell'>
+        <i class='fa <%=commentClass%> row-comment'></i>
+        <i class='fa row-not-selected select'></i>
+      </span>
+      <%
+      headers.forEach(function(header){
+          %>
+          <span class='<%=header.className%>' data-field-name='<%= header.name %>'><%=data[header.name]%></span>
+          <%
+      });             
+      %>
+    </div>
+    <div class='res-row-details' style='display:none;'></div> 
+  </li>
+</script>
+
+<!-- row template for payment table -->
+<script type='text/template' id='payment-row-template'>
+  <li class="list-item-row row" data-id="<%=data.id%>" >
+    <div class='res-row clearfix'>
+      <span class='action-cell'>
+        <% if (data.commentCount > 0) { %>
+          <i class='fa comment-added row-comment'></i>
+        <% }  else {%>
+          <i style="width: 12px;" class="fa"></i>
+        <% }%>
+        <i class='fa row-not-selected select'></i>
+      </span>
+      <%
+      headers.forEach(function(header){
+          %>
+          <span class='<%=header.className%>' data-field-name='<%= header.name %>'><%=data[header.name]%></span>
+          <%
+      });             
+      %>
+    </div>
+    <div class='res-row-details' style='display:none;'></div> 
+  </li>
+</script>
+
+<!-- row template for payment table -->
+<script type='text/template' id='draw-row-template'>
+  <li class="list-item-row row" data-id="<%=data.id%>" >
+    <div class='res-row clearfix'>
+      <%
+      headers.forEach(function(header){
+          %>
+          <span class='<%=header.className%>' data-field-name='<%= header.name %>'><%=data[header.name]%></span>
+          <%
+      });             
+      %>
+    </div>
+    <div class='res-row-details' style='display:none;'></div> 
+  </li>
+</script>
+
+<!-- row template saved search row -->
+<script type='text/template' id='saved-search-popup-row-template'>
+  <li class="list-item-row row" data-id="<%=id%>" >
+    <span>
+      <i class='fa fa-check-square select'></i>
+      <i class='fa fa-square-o select'></i>
+    </span>
+    <span class='' data-field-name='<%= name %>'><%=displayName%></span>
+  </li>
+</script>
+
+<!-- row template for unfinalized business group popup in payments -->
+<script type='text/template' id='unfinalized-bizgrp-popup-row-template'>
+  <li class='list-item-row row select-centered' data-id='<%=id%>' >
+      <span class='unfinalize-select'>
+        <i class='fa fa-check-square select'></i>
+        <i class='fa fa-square-o select'></i>
+      </span>
+      <span class='unfinalize-businessGroup' data-field-name='<%= name %>'><%=name%></span>
+      <span class='unfinalize-lastPeriod'><%=lastFinalizedPeriodName%></span>
+      <span class='unfinalize-status'><%=finalizableStatus%></span>
+  </li>
+</script>
+
+<!-- row template for business group popup with payments in payments tab-->
+<script type='text/template' id='bizgrp-popup-withpayment-row-template'>
+  <li class='list-item-row row select-centered' data-id='<%=id%>' >
+      <span class='unfinalize-select'>
+        <i class='fa fa-check-square select'></i>
+        <i class='fa fa-square-o select'></i>
+      </span>
+      <span class='unfinalize-businessGroup' data-field-name='<%= name %>'><%=name%></span>
+  </li>
+</script>
+
+  <!-- for downloads, release, etc., finalize popups -->
+  <div id="modalContainer" style="display:none"></div>
+  <div class="modal-backdrop fade out hide"></div>
+  
+  <!-- for input popup where item selection happens -->
+  <div id="popupDiv" style="display:none"></div>
+  <div class="popup-modal-backdrop fade out hide"></div>
+
+  <!-- for dialog views DialogView.js -->
+  <div id="modal-container" style="display:none"></div>
+
+</body>
+
+<script src="../../common/js/config/common-config.js"></script>
+<script data-main="results/js/main.js" src="../../lib/requirejs/js/require.js"></script>
+
+</html>
